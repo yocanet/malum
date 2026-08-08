@@ -15,24 +15,25 @@ export default {
         ],
         display: ["Space Grotesk", "Inter", "ui-sans-serif", "sans-serif"],
       },
-      /* Corporate palette:
-         brand = firma turuncusu (#F15F2C @ 500)
-         steel = firma grisi   (#6C7E8F @ 500)
+      /* Premium light-mode palette:
+         brand = electric indigo (#6366F1 @ 500) — primary accent
+         steel = cool support grey (#6C7E8F @ 500) — neutrals
+         Limited violet/cyan/amber detail accents come from Tailwind defaults.
          ink/body are named aliases for the theme text colours. */
       colors: {
         ink: "#0F172A",
-        body: "#6C7E8F",
+        body: "#64748B",
         brand: {
-          50: "#FEF3EE",
-          100: "#FDE4D8",
-          200: "#FAC8B0",
-          300: "#F7A382",
-          400: "#F47F53",
-          500: "#F15F2C",
-          600: "#D9481B",
-          700: "#B23A15",
-          800: "#8C2E12",
-          900: "#72260F",
+          50: "#EEF2FF",
+          100: "#E0E7FF",
+          200: "#C7D2FE",
+          300: "#A5B4FC",
+          400: "#818CF8",
+          500: "#6366F1",
+          600: "#4F46E5",
+          700: "#4338CA",
+          800: "#3730A3",
+          900: "#312E81",
         },
         steel: {
           50: "#F3F6F8",

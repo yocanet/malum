@@ -1,19 +1,22 @@
 import React, { useLayoutEffect, useRef } from "react";
 import { Sparkles, ArrowRight, ArrowUpRight, ArrowDown } from "lucide-react";
-import { gsap, prefersReducedMotion, useReducedMotion } from "../lib/motion";
+import { gsap, prefersReducedMotion } from "../lib/motion";
 import { SectionBadge } from "./ui.jsx";
 import { SECTION_BG, CLIENT_MARKS } from "../data/content.jsx";
 
-/** Pinned hero scene: mask-reveal on load, lift-away dissolve on scroll-out. */
+/**
+ * Hero — premium light-mode opening. Deliberately UNPINNED: the load-in
+ * reveal plus a single light scrubbed drift keeps the intro cinematic
+ * without competing with the Case Studies scroll choreography.
+ */
 const Hero = () => {
   const sectionRef = useRef(null);
-  const reduced = useReducedMotion();
 
   useLayoutEffect(() => {
     if (prefersReducedMotion()) return undefined;
 
     const ctx = gsap.context(() => {
-      /* Floating gradient mesh — slow organic drift in pastel tones */
+      /* Floating gradient mesh — slow organic drift */
       gsap.utils.toArray(".hero-blob").forEach((blob, i) => {
         gsap.to(blob, {
           x: () => gsap.utils.random(-70, 70),
@@ -29,41 +32,46 @@ const Hero = () => {
       });
 
       /* Slowly rotating conic ring behind the headline */
-      gsap.to(".hero-ring", {
-        rotate: 360,
-        duration: 60,
-        ease: "none",
-        repeat: -1,
-      });
+      gsap.to(".hero-ring", { rotate: 360, duration: 60, ease: "none", repeat: -1 });
 
       /* Load-in: headline lines rise out of overflow masks */
       gsap
         .timeline({ defaults: { ease: "power4.out" } })
-        .from(".hero-line-inner", { yPercent: 120, duration: 1.1, stagger: 0.12 }, 0.15)
-        .from(
+        .fromTo(
+          ".hero-line-inner",
+          { yPercent: 120 },
+          { yPercent: 0, duration: 1.1, stagger: 0.12 },
+          0.15
+        )
+        .fromTo(
           ".hero-soft",
-          { y: 28, opacity: 0, duration: 0.9, stagger: 0.1, ease: "power3.out" },
+          { y: 28, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.9, stagger: 0.1, ease: "power3.out" },
           "-=0.7"
         );
 
-      /* Scroll-out story: pin briefly; headline lifts away line by line. */
-      gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            end: "+=85%",
-            pin: true,
-            scrub: 1,
-            anticipatePin: 1,
-          },
-          defaults: { ease: "none" },
-        })
-        .to(".hero-line-inner", { yPercent: -130, stagger: 0.08 }, 0)
-        .to(".hero-soft", { y: -60, opacity: 0, stagger: 0.04 }, 0)
-        .to(".hero-blob", { scale: 1.5, opacity: 0.35 }, 0)
-        .to(".hero-watermark", { y: 80, opacity: 0 }, 0)
-        .to(".hero-scroll-hint", { opacity: 0 }, 0);
+      /* Gentle scroll-out drift — NO pin, fully reversible scrub. */
+      gsap.to(".hero-content", {
+        y: -70,
+        opacity: 0.25,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom 35%",
+          scrub: true,
+        },
+      });
+      gsap.to(".hero-scroll-hint", {
+        opacity: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "12% top",
+          scrub: true,
+        },
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -74,24 +82,21 @@ const Hero = () => {
       id="home"
       ref={sectionRef}
       data-bg={SECTION_BG.hero}
-      className={
-        "relative flex items-center justify-center overflow-hidden px-4 " +
-        (reduced ? "min-h-screen pb-24 pt-36" : "h-screen")
-      }
+      className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 pb-20 pt-32"
     >
-      {/* Pastel gradient mesh background */}
+      {/* Gradient mesh background */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="hero-blob absolute -top-24 left-[8%] h-[28rem] w-[28rem] rounded-full bg-brand-300/35 blur-3xl" />
-        <div className="hero-blob absolute right-[5%] top-[12%] h-[24rem] w-[24rem] rounded-full bg-steel-200/40 blur-3xl" />
-        <div className="hero-blob absolute bottom-[-8rem] left-[30%] h-[26rem] w-[26rem] rounded-full bg-amber-200/35 blur-3xl" />
-        <div className="hero-blob absolute bottom-[10%] right-[22%] h-[18rem] w-[18rem] rounded-full bg-steel-200/40 blur-3xl" />
+        <div className="hero-blob absolute -top-24 left-[8%] h-[28rem] w-[28rem] rounded-full bg-brand-300/40 blur-3xl" />
+        <div className="hero-blob absolute right-[5%] top-[12%] h-[24rem] w-[24rem] rounded-full bg-cyan-200/40 blur-3xl" />
+        <div className="hero-blob absolute bottom-[-8rem] left-[30%] h-[26rem] w-[26rem] rounded-full bg-violet-200/40 blur-3xl" />
+        <div className="hero-blob absolute bottom-[10%] right-[22%] h-[18rem] w-[18rem] rounded-full bg-sky-200/40 blur-3xl" />
 
         {/* Rotating conic accent ring */}
         <div
           className="hero-ring absolute left-1/2 top-1/2 h-[46rem] w-[46rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60"
           style={{
             background:
-              "conic-gradient(from 0deg, transparent 0deg, rgba(241,95,44,0.35) 80deg, transparent 160deg, rgba(108,126,143,0.35) 250deg, transparent 330deg)",
+              "conic-gradient(from 0deg, transparent 0deg, rgba(99,102,241,0.35) 80deg, transparent 160deg, rgba(34,211,238,0.3) 250deg, transparent 330deg)",
             maskImage:
               "radial-gradient(circle, transparent 57%, black 59%, black 61%, transparent 63%)",
             WebkitMaskImage:
@@ -113,34 +118,45 @@ const Hero = () => {
           }}
         />
 
+        {/* Fine noise texture */}
+        <div
+          className="absolute inset-0 opacity-[0.5] mix-blend-multiply"
+          style={{
+            backgroundImage:
+              "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.06 0 0 0 0 0.09 0 0 0 0 0.16 0 0 0 0.025 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+          }}
+        />
+
         {/* Architectural watermark */}
         <span className="hero-watermark absolute bottom-[-1vw] left-1/2 -translate-x-1/2 select-none whitespace-nowrap font-display text-[16vw] font-bold leading-none tracking-tight text-ink/[0.03]">
           SPARKLE
         </span>
       </div>
 
-      <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center text-center">
+      <div className="hero-content relative z-10 mx-auto flex max-w-5xl flex-col items-center text-center">
         <div className="hero-soft">
           <SectionBadge>Medya Planlama &amp; Performans Ajansı</SectionBadge>
         </div>
 
-        <h1 className="mt-8 font-display text-6xl font-bold leading-[0.98] tracking-[-0.03em] text-slate-900 sm:text-7xl lg:text-8xl">
+        <h1 className="mt-8 font-display text-[2.85rem] font-bold leading-[1.02] tracking-[-0.03em] text-ink sm:text-7xl lg:text-8xl">
           <span className="block overflow-hidden pb-1">
             <span className="hero-line-inner block will-change-transform">
               Medyanın{" "}
               <span className="relative inline-block">
-                <span className="bg-gradient-to-r from-brand-500 via-amber-400 to-steel-500 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-brand-500 via-violet-500 to-cyan-500 bg-clip-text text-transparent">
                   ışıltısı
                 </span>
                 <Sparkles
-                  className="absolute -right-9 -top-4 h-8 w-8 text-brand-500"
+                  className="absolute -right-9 -top-4 hidden h-8 w-8 text-brand-500 sm:block"
                   aria-hidden="true"
                 />
               </span>
             </span>
           </span>
           <span className="block overflow-hidden pb-2">
-            <span className="hero-line-inner block will-change-transform">elimizde.</span>
+            <span className="hero-line-inner block will-change-transform">
+              performansa dönüşür.
+            </span>
           </span>
         </h1>
 
@@ -150,10 +166,10 @@ const Hero = () => {
           sağlar.
         </p>
 
-        <div className="hero-soft mt-10 flex flex-col items-center gap-4 sm:flex-row">
+        <div className="hero-soft mt-10 flex w-full flex-col items-center justify-center gap-4 sm:w-auto sm:flex-row">
           <a
             href="#case-studies"
-            className="group inline-flex items-center gap-2 rounded-full bg-ink px-8 py-4 text-sm font-semibold text-white shadow-xl shadow-slate-900/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-slate-800 hover:shadow-2xl"
+            className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-500 px-8 py-4 text-sm font-semibold text-white shadow-xl shadow-brand-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-400 hover:shadow-2xl hover:shadow-brand-500/40 sm:w-auto"
           >
             Vakaları İncele
             <ArrowRight
@@ -163,7 +179,7 @@ const Hero = () => {
           </a>
           <a
             href="#contact"
-            className="inline-flex items-center gap-2 rounded-full border border-brand-300 bg-white/80 px-8 py-4 text-sm font-semibold text-brand-600 shadow-sm backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-400 hover:bg-brand-50 hover:shadow-lg hover:shadow-brand-500/20"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-slate-200/80 bg-white/70 px-8 py-4 text-sm font-semibold text-ink shadow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-300 hover:bg-brand-50/70 hover:text-brand-600 hover:shadow-lg hover:shadow-brand-500/10 sm:w-auto"
           >
             İletişime Geç
             <ArrowUpRight className="h-4 w-4" aria-hidden="true" />

@@ -16,14 +16,18 @@ const Contact = () => {
     if (prefersReducedMotion()) return undefined;
 
     const ctx = gsap.context(() => {
-      gsap.from(".contact-reveal", {
-        y: 48,
-        opacity: 0,
-        duration: 0.9,
-        stagger: 0.14,
-        ease: "power3.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 75%" },
-      });
+      gsap.fromTo(
+        ".contact-reveal",
+        { y: 48, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.9,
+          stagger: 0.14,
+          ease: "power3.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 75%" },
+        }
+      );
     }, sectionRef);
     return () => ctx.revert();
   }, []);
@@ -65,7 +69,7 @@ const Contact = () => {
           </div>
           <h2 className="contact-reveal mt-6 font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
             Markanızı{" "}
-            <span className="bg-gradient-to-r from-brand-500 to-steel-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-brand-500 to-cyan-500 bg-clip-text text-transparent">
               parlatalım
             </span>
             .
@@ -179,7 +183,7 @@ const Contact = () => {
 
               <button
                 type="submit"
-                className="group mt-8 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-brand-500 via-amber-400 to-steel-500 px-8 py-4 text-sm font-bold text-white shadow-xl shadow-brand-500/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-brand-500/35 focus:outline-none focus:ring-4 focus:ring-brand-500/30"
+                className="group mt-8 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-brand-500 via-violet-500 to-cyan-500 px-8 py-4 text-sm font-bold text-white shadow-xl shadow-brand-500/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-brand-500/35 focus:outline-none focus:ring-4 focus:ring-brand-500/30"
               >
                 Gönder
                 <Send

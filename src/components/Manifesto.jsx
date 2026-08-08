@@ -28,13 +28,17 @@ const Manifesto = () => {
         }
       );
 
-      gsap.from(".manifesto-badge", {
-        y: 24,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power3.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 80%" },
-      });
+      gsap.fromTo(
+        ".manifesto-badge",
+        { y: 24, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 80%" },
+        }
+      );
     }, sectionRef);
 
     return () => ctx.revert();
@@ -57,11 +61,11 @@ const Manifesto = () => {
               className={
                 "manifesto-word mr-[0.32em] inline-block will-change-transform " +
                 (word.gradient
-                  ? "bg-gradient-to-r from-brand-500 via-amber-400 to-steel-500 bg-clip-text text-transparent"
+                  ? "bg-gradient-to-r from-brand-500 via-violet-500 to-cyan-500 bg-clip-text text-transparent"
                   : word.accent === "violet"
                   ? "text-brand-500"
                   : word.accent === "teal"
-                  ? "text-steel-500"
+                  ? "text-cyan-600"
                   : "")
               }
             >

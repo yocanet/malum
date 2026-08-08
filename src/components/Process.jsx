@@ -11,23 +11,31 @@ const Process = () => {
     if (prefersReducedMotion()) return undefined;
 
     const ctx = gsap.context(() => {
-      gsap.from(".process-heading > *", {
-        y: 36,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.12,
-        ease: "power3.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 78%" },
-      });
+      gsap.fromTo(
+        ".process-heading > *",
+        { y: 36, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.12,
+          ease: "power3.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 78%" },
+        }
+      );
 
-      gsap.from(".process-card", {
-        y: 56,
-        opacity: 0,
-        duration: 0.9,
-        stagger: 0.14,
-        ease: "power3.out",
-        scrollTrigger: { trigger: ".process-grid", start: "top 82%" },
-      });
+      gsap.fromTo(
+        ".process-card",
+        { y: 56, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.9,
+          stagger: 0.14,
+          ease: "power3.out",
+          scrollTrigger: { trigger: ".process-grid", start: "top 82%" },
+        }
+      );
 
       /* Connector line draws with scroll */
       gsap.fromTo(
@@ -68,7 +76,7 @@ const Process = () => {
             className="absolute left-0 right-0 top-10 hidden h-0.5 bg-slate-100 lg:block"
             aria-hidden="true"
           >
-            <div className="process-line h-full w-full origin-left bg-gradient-to-r from-brand-500 via-amber-400 to-steel-500" />
+            <div className="process-line h-full w-full origin-left bg-gradient-to-r from-brand-500 via-violet-500 to-cyan-500" />
           </div>
 
           <div className="process-grid grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">

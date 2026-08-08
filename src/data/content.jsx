@@ -18,6 +18,10 @@ import {
   PenTool,
   Rocket,
   LineChart,
+  Search,
+  Users,
+  Gauge,
+  Palette,
 } from "lucide-react";
 
 export const NAV_LINKS = [
@@ -31,13 +35,13 @@ export const NAV_LINKS = [
 /* Page background tints, morphed as each section takes the stage. */
 export const SECTION_BG = {
   hero: "#F8FAFC",
-  manifesto: "#FEF3EE",
+  manifesto: "#EEF2FF",
   stats: "#FFFFFF",
-  capabilities: "#EFF3F6",
-  cases: "#F8FAFC",
+  capabilities: "#F8FAFC",
+  cases: "#EEF2FF",
   process: "#FFFFFF",
-  team: "#F8FAFC",
-  contact: "#FEF3EE",
+  team: "#F1F5F9",
+  contact: "#F8FAFC",
 };
 
 export const CAPABILITIES = [
@@ -87,7 +91,7 @@ export const CASE_STUDIES = [
     ],
     awards: ["Felis", "MIXX"],
     art: "dco",
-    gradient: "from-brand-500/15 via-amber-400/10 to-transparent",
+    gradient: "from-brand-500/15 via-violet-400/10 to-transparent",
     chip: "text-brand-600 bg-brand-50 border-brand-200",
     number: "01",
   },
@@ -104,8 +108,8 @@ export const CASE_STUDIES = [
     ],
     awards: ["Kristal Elma"],
     art: "audio",
-    gradient: "from-steel-500/15 via-steel-300/10 to-transparent",
-    chip: "text-steel-600 bg-steel-50 border-steel-200",
+    gradient: "from-cyan-500/15 via-cyan-300/10 to-transparent",
+    chip: "text-cyan-700 bg-cyan-50 border-cyan-200",
     number: "02",
   },
   {
@@ -121,7 +125,7 @@ export const CASE_STUDIES = [
     ],
     awards: ["MIXX Europe"],
     art: "film",
-    gradient: "from-brand-500/15 via-steel-400/10 to-transparent",
+    gradient: "from-violet-500/15 via-cyan-400/10 to-transparent",
     chip: "text-brand-600 bg-brand-50 border-brand-200",
     number: "03",
   },
@@ -132,6 +136,7 @@ export const TEAM = [
     name: "Burak Kaan Bülbüloğlu",
     role: "Co-Founder",
     experience: "27 Yıl Tecrübe",
+    years: 27,
     initials: "BK",
     accent: "violet",
     bio: "Türkiye'nin önde gelen medya gruplarında satın alma ve strateji liderliği.",
@@ -140,6 +145,7 @@ export const TEAM = [
     name: "Rima Erdemir",
     role: "Co-Founder",
     experience: "30 Yıl Tecrübe",
+    years: 30,
     initials: "RE",
     accent: "teal",
     bio: "Uluslararası ajans ağlarında marka ve iletişim yönetimi tecrübesi.",
@@ -148,6 +154,7 @@ export const TEAM = [
     name: "Öncü Gülmez",
     role: "Agency Vice President",
     experience: "19 Yıl Tecrübe",
+    years: 19,
     initials: "ÖG",
     accent: "violet",
     bio: "Performans pazarlama ve veri odaklı büyüme operasyonları uzmanı.",
@@ -185,12 +192,111 @@ export const MARQUEE_ITEMS = [
   "KREATİF",
 ];
 
-/* Animated counters — value is tweened from 0, prefix/suffix stay static. */
+/* Animated counters — value is tweened from 0, prefix/suffix stay static.
+   Values are plain finite numbers; formatting lives in prefix/suffix so the
+   counter can never produce NaN. */
 export const STATS = [
-  { value: 313, prefix: "+", suffix: "M", label: "Tek kampanyada gösterim" },
-  { value: 76, prefix: "", suffix: "+", label: "Yıl toplam yönetici tecrübesi" },
-  { value: 14, prefix: "", suffix: "X", label: "Kanıtlanmış gelir çarpanı" },
-  { value: 4, prefix: "", suffix: "", label: "Uluslararası ödül" },
+  { value: 313, prefix: "+", suffix: "M", label: "Gösterim" },
+  { value: 10, prefix: "", suffix: "X", label: "ROAS" },
+  { value: 140, prefix: "", suffix: "M", label: "Dizi İzlenmesi" },
+  { value: 14, prefix: "", suffix: "X", label: "Revenue" },
+  { value: 11, prefix: "", suffix: "X", label: "CTR" },
+  { value: 76, prefix: "", suffix: "+", label: "Yıl Tecrübe" },
+];
+
+/* Premium award badges. */
+export const AWARDS = [
+  { name: "Felis", detail: "Nesine.com — DCO" },
+  { name: "MIXX", detail: "Nesine.com — DCO" },
+  { name: "Kristal Elma", detail: "Hepsiburada — In-Game Audio" },
+  { name: "MIXX Europe", detail: "Hepsiburada — Dizi Sponsorluğu" },
+];
+
+/* 360° bento grid — services + spans. `span` controls the bento shape. */
+export const BENTO_CAPABILITIES = [
+  {
+    id: "strategy",
+    title: "Strateji",
+    description: "Marka hedefini medya matematiğine çeviren yol haritası.",
+    icon: Compass,
+    accent: "brand",
+    span: "lg:col-span-2",
+  },
+  {
+    id: "programmatic",
+    title: "Programmatic & DSP",
+    description:
+      "DV360, Teads ve Adform üzerinde tam yetkin ekiplerle programatik satın alma, gerçek zamanlı optimizasyon ve şeffaf raporlama.",
+    icon: MonitorPlay,
+    accent: "brand",
+    span: "lg:col-span-4",
+    featured: true,
+    tags: ["DV360", "Teads", "Adform"],
+  },
+  {
+    id: "performance",
+    title: "Performance",
+    description: "Dönüşüm odaklı medya; her lira ölçülür, her gün optimize edilir.",
+    icon: TrendingUp,
+    accent: "cyan",
+    span: "lg:col-span-2",
+  },
+  {
+    id: "seo",
+    title: "SEO / Analytics",
+    description: "Arama görünürlüğü ve veri altyapısı tek çatıda.",
+    icon: Search,
+    accent: "violet",
+    span: "lg:col-span-2",
+  },
+  {
+    id: "influencer",
+    title: "Influencer",
+    description: "Doğru yüzlerle güven inşa eden içerik iş birlikleri.",
+    icon: Users,
+    accent: "brand",
+    span: "lg:col-span-2",
+  },
+  {
+    id: "ingame",
+    title: "In-Game Audio",
+    description:
+      "Oyun içi sesli reklamla ekrana bakmayan kullanıcıya bile ulaşın — kanıtlanmış 14X gelir çarpanı.",
+    icon: Gamepad2,
+    accent: "cyan",
+    span: "lg:col-span-3",
+  },
+  {
+    id: "measurement",
+    title: "Measurement / Brand Lift",
+    description:
+      "Kantar iş birliğiyle marka bilinirliği ve satış etkisi bağımsız ölçümlenir.",
+    icon: Gauge,
+    accent: "violet",
+    span: "lg:col-span-3",
+  },
+  {
+    id: "creative",
+    title: "Creative / Content",
+    description: "Kanala göre düşünülmüş kreatif; format değil, fikir önce gelir.",
+    icon: Palette,
+    accent: "brand",
+    span: "lg:col-span-2",
+  },
+];
+
+/* Technology ecosystem — rendered as its own strong bento block. */
+export const TECH_ECOSYSTEM = [
+  "DV360",
+  "Teads",
+  "Adform",
+  "Kantar",
+  "IAB",
+  "Google Ads",
+  "Meta",
+  "TikTok",
+  "YouTube",
+  "Analytics",
 ];
 
 export const CLIENT_MARKS = [

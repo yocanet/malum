@@ -52,7 +52,7 @@ const Marquee = () => {
               >
                 {item}
                 <Sparkles
-                  className={"h-5 w-5 " + (i % 2 === 0 ? "text-brand-500" : "text-steel-500")}
+                  className={"h-5 w-5 " + (i % 2 === 0 ? "text-brand-400" : "text-cyan-500")}
                 />
               </span>
             ))}

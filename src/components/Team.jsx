@@ -17,7 +17,7 @@ const TeamCard = ({ member }) => {
       />
       <div className="relative">
         {/* Monogram avatar with gradient ring */}
-        <div className="mx-auto h-24 w-24 rounded-full bg-gradient-to-br from-brand-500 via-amber-400 to-steel-400 p-[3px] transition-transform duration-500 group-hover:scale-105">
+        <div className="mx-auto h-24 w-24 rounded-full bg-gradient-to-br from-brand-500 via-violet-500 to-cyan-400 p-[3px] transition-transform duration-500 group-hover:scale-105">
           <div
             className={
               "flex h-full w-full items-center justify-center rounded-full font-display text-2xl font-bold " +
@@ -41,10 +41,19 @@ const TeamCard = ({ member }) => {
         </p>
         <p className="mt-3 text-sm leading-relaxed text-body">{member.bio}</p>
 
-        <span className="mt-5 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-1.5 text-xs font-semibold text-slate-600">
-          <Trophy className="h-3.5 w-3.5 text-amber-500" aria-hidden="true" />
-          {member.experience}
-        </span>
+        {/* Experience — staged big, not a small chip */}
+        <div
+          className="mt-6 flex items-baseline justify-center gap-2"
+          aria-label={member.experience}
+        >
+          <span className="bg-gradient-to-r from-brand-500 to-cyan-500 bg-clip-text font-display text-6xl font-bold leading-none tracking-tight text-transparent">
+            {member.years}
+          </span>
+          <span className="flex flex-col items-start leading-tight">
+            <span className="text-sm font-bold uppercase tracking-wider text-ink">yıl</span>
+            <span className="text-xs font-medium text-slate-400">tecrübe</span>
+          </span>
+        </div>
 
         <div className="mt-6 flex justify-center border-t border-slate-100 pt-5">
           <a
@@ -68,14 +77,18 @@ const Team = () => {
     if (prefersReducedMotion()) return undefined;
 
     const ctx = gsap.context(() => {
-      gsap.from(".team-heading > *", {
-        y: 36,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.12,
-        ease: "power3.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 78%" },
-      });
+      gsap.fromTo(
+        ".team-heading > *",
+        { y: 36, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.12,
+          ease: "power3.out",
+          scrollTrigger: { trigger: sectionRef.current, start: "top 78%" },
+        }
+      );
 
       gsap.utils.toArray(".team-card").forEach((card, i) => {
         gsap.fromTo(
