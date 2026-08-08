@@ -62,6 +62,7 @@ const Hero = () => {
         .to(".hero-line-inner", { yPercent: -130, stagger: 0.08 }, 0)
         .to(".hero-soft", { y: -60, opacity: 0, stagger: 0.04 }, 0)
         .to(".hero-blob", { scale: 1.5, opacity: 0.35 }, 0)
+        .to(".hero-watermark", { y: 80, opacity: 0 }, 0)
         .to(".hero-scroll-hint", { opacity: 0 }, 0);
     }, sectionRef);
 
@@ -111,6 +112,11 @@ const Hero = () => {
               "radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 100%)",
           }}
         />
+
+        {/* Architectural watermark */}
+        <span className="hero-watermark absolute bottom-[-1vw] left-1/2 -translate-x-1/2 select-none whitespace-nowrap font-display text-[16vw] font-bold leading-none tracking-tight text-ink/[0.03]">
+          SPARKLE
+        </span>
       </div>
 
       <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center text-center">
@@ -118,7 +124,7 @@ const Hero = () => {
           <SectionBadge>Medya Planlama &amp; Performans Ajansı</SectionBadge>
         </div>
 
-        <h1 className="mt-8 font-display text-5xl font-bold leading-[1.04] tracking-tight text-ink sm:text-6xl lg:text-7xl">
+        <h1 className="mt-8 font-display text-6xl font-bold leading-[0.98] tracking-[-0.03em] text-slate-900 sm:text-7xl lg:text-8xl">
           <span className="block overflow-hidden pb-1">
             <span className="hero-line-inner block will-change-transform">
               Medyanın{" "}
@@ -127,7 +133,7 @@ const Hero = () => {
                   ışıltısı
                 </span>
                 <Sparkles
-                  className="absolute -right-7 -top-3 h-7 w-7 text-brand-500"
+                  className="absolute -right-9 -top-4 h-8 w-8 text-brand-500"
                   aria-hidden="true"
                 />
               </span>

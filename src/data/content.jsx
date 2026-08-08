@@ -34,7 +34,7 @@ export const SECTION_BG = {
   manifesto: "#FEF3EE",
   stats: "#FFFFFF",
   capabilities: "#EFF3F6",
-  cases: "#FDEFE6",
+  cases: "#F8FAFC",
   process: "#FFFFFF",
   team: "#F8FAFC",
   contact: "#FEF3EE",

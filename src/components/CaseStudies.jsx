@@ -5,31 +5,52 @@ import { SectionBadge } from "./ui.jsx";
 import CaseArt from "./CaseArt.jsx";
 import { CASE_STUDIES, SECTION_BG } from "../data/content.jsx";
 
+/**
+ * Case Studies — horizontal storytelling slider, sticky-scene edition.
+ *
+ * Layout fix:
+ *   - `relative h-[300vh]` parent defines the scroll runway.
+ *   - `sticky top-0 h-screen flex items-center overflow-hidden` keeps the
+ *     scene on screen with NO ScrollTrigger pinning — no pin-spacer, so the
+ *     jump/flicker when scrolling back up is structurally impossible.
+ *   - The track's `x` is scrubbed against the parent's progress. The travel
+ *     distance is measured from the real track width (`scrollWidth -
+ *     innerWidth`) with `invalidateOnRefresh`, so any number of cards or a
+ *     window resize stays perfectly calibrated (a hardcoded -67% would drift).
+ *   - Cards animate with scrub-only micro-motion (scale/parallax, never
+ *     opacity cliffs), so reversing direction replays smoothly instead of
+ *     blinking. Cards sit at `z-10`; no clipping masks on the cards
+ *     themselves — only the sticky viewport clips.
+ */
+
 const CaseStudyCard = ({ study }) => (
   <article
-    className="case-card relative flex h-[58vh] min-h-[27rem] w-[85vw] max-w-3xl shrink-0 flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white/80 p-8 shadow-lg backdrop-blur-md transition-shadow duration-500 hover:shadow-2xl sm:p-10"
+    className="case-card relative z-10 flex h-[58vh] min-h-[27rem] w-[85vw] max-w-3xl shrink-0 flex-col rounded-3xl border border-slate-200/80 bg-white/80 p-8 shadow-sm backdrop-blur-xl transition-all duration-500 hover:border-brand-500/30 hover:shadow-xl sm:p-10"
     aria-label={`${study.client} — ${study.label}`}
   >
+    {/* Soft brand wash — rounded to the card, no overflow clipping needed */}
     <div
       aria-hidden="true"
-      className={"pointer-events-none absolute inset-0 bg-gradient-to-br " + study.gradient}
+      className={
+        "pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br " + study.gradient
+      }
     />
 
     {/* Abstract campaign artwork */}
     <CaseArt
       variant={study.art}
-      className="case-art pointer-events-none absolute -right-8 top-1/2 hidden h-72 w-72 -translate-y-1/2 opacity-90 sm:block lg:h-80 lg:w-80"
+      className="case-art pointer-events-none absolute right-0 top-1/2 hidden h-72 w-72 -translate-y-1/2 opacity-90 sm:block lg:h-80 lg:w-80"
     />
 
     {/* Oversized index number */}
     <span
       aria-hidden="true"
-      className="case-number pointer-events-none absolute -right-4 -top-8 select-none font-display text-[10rem] font-bold leading-none text-ink/[0.04]"
+      className="case-number pointer-events-none absolute right-4 top-2 select-none font-display text-[9rem] font-bold leading-none text-ink/[0.05]"
     >
       {study.number}
     </span>
 
-    <div className="relative flex h-full flex-col sm:max-w-[60%]">
+    <div className="relative z-10 flex h-full flex-col sm:max-w-[60%]">
       <div className="flex flex-wrap items-center gap-3">
         <span
           className={
@@ -50,10 +71,10 @@ const CaseStudyCard = ({ study }) => (
         ))}
       </div>
 
-      <h3 className="mt-6 font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+      <h3 className="mt-6 font-display text-4xl font-bold tracking-tight text-slate-900 sm:text-5xl">
         {study.client}
       </h3>
-      <p className="mt-4 max-w-xl text-base leading-relaxed text-body sm:text-lg">
+      <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-500 sm:text-lg">
         {study.summary}
       </p>
 
@@ -62,8 +83,8 @@ const CaseStudyCard = ({ study }) => (
           const StatIcon = stat.icon;
           return (
             <div key={stat.label} className="flex flex-col">
-              <StatIcon className="mb-2 h-5 w-5 text-slate-400" aria-hidden="true" />
-              <span className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+              <StatIcon className="mb-2 h-5 w-5 text-brand-400" aria-hidden="true" />
+              <span className="font-display text-3xl font-bold tracking-tight text-slate-900">
                 {stat.value}
               </span>
               <span className="mt-1 text-xs font-semibold uppercase tracking-wider text-slate-400">
@@ -77,32 +98,30 @@ const CaseStudyCard = ({ study }) => (
   </article>
 );
 
-/** Pinned horizontal scroll scene with progress bar. */
 const CaseStudies = () => {
-  const sectionRef = useRef(null);
+  const wrapRef = useRef(null);
   const trackRef = useRef(null);
   const progressRef = useRef(null);
   const reduced = useReducedMotion();
 
   useLayoutEffect(() => {
-    const section = sectionRef.current;
+    const wrap = wrapRef.current;
     const track = trackRef.current;
-    if (!section || !track) return undefined;
+    if (!wrap || !track) return undefined;
     if (prefersReducedMotion()) return undefined;
 
     const ctx = gsap.context(() => {
       const getScrollAmount = () => Math.max(0, track.scrollWidth - window.innerWidth);
 
+      /* Horizontal drive: parent runway progress → track x. */
       const horizontalTween = gsap.to(track, {
         x: () => -getScrollAmount(),
         ease: "none",
         scrollTrigger: {
-          trigger: section,
+          trigger: wrap,
           start: "top top",
-          end: () => `+=${getScrollAmount()}`,
-          pin: true,
+          end: "bottom bottom",
           scrub: 1,
-          anticipatePin: 1,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             if (progressRef.current) {
@@ -112,27 +131,32 @@ const CaseStudies = () => {
         },
       });
 
+      /* Scrub-only micro-motion — fully reversible, no opacity cliffs. */
       gsap.utils.toArray(".case-card").forEach((card) => {
-        gsap.from(card, {
-          opacity: 0.35,
-          scale: 0.95,
-          duration: 0.8,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: card,
-            containerAnimation: horizontalTween,
-            start: "left 95%",
-            toggleActions: "play none none reverse",
-          },
-        });
+        gsap.fromTo(
+          card,
+          { scale: 0.96, y: 16 },
+          {
+            scale: 1,
+            y: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: card,
+              containerAnimation: horizontalTween,
+              start: "left 100%",
+              end: "left 55%",
+              scrub: true,
+            },
+          }
+        );
 
         const number = card.querySelector(".case-number");
         if (number) {
           gsap.fromTo(
             number,
-            { xPercent: 30 },
+            { xPercent: 24 },
             {
-              xPercent: -20,
+              xPercent: -12,
               ease: "none",
               scrollTrigger: {
                 trigger: card,
@@ -149,9 +173,9 @@ const CaseStudies = () => {
         if (art) {
           gsap.fromTo(
             art,
-            { xPercent: 12, rotate: 4 },
+            { xPercent: 10, rotate: 4 },
             {
-              xPercent: -6,
+              xPercent: -5,
               rotate: -2,
               ease: "none",
               scrollTrigger: {
@@ -166,16 +190,18 @@ const CaseStudies = () => {
         }
       });
 
+      /* Heading intro (one-shot entrance is fine outside the slider). */
       gsap.from(".cases-heading > *", {
         y: 32,
         opacity: 0,
         duration: 0.8,
         stagger: 0.1,
         ease: "power3.out",
-        scrollTrigger: { trigger: section, start: "top 70%" },
+        scrollTrigger: { trigger: wrap, start: "top 80%" },
       });
-    }, section);
+    }, wrap);
 
+    /* Recalibrate once fonts/images settle. */
     const refresh = () => ScrollTrigger.refresh();
     window.addEventListener("load", refresh);
 
@@ -188,16 +214,23 @@ const CaseStudies = () => {
   return (
     <section
       id="case-studies"
-      ref={sectionRef}
+      ref={wrapRef}
       data-bg={SECTION_BG.cases}
-      className="relative overflow-hidden"
+      className={"relative " + (reduced ? "" : "h-[300vh]")}
     >
-      <div className={"flex flex-col justify-center py-10 " + (reduced ? "" : "h-screen")}>
+      {/* Sticky scene — stays on screen while the runway scrolls beneath */}
+      <div
+        className={
+          reduced
+            ? "flex flex-col justify-center py-16"
+            : "sticky top-0 z-10 flex h-screen flex-col justify-center overflow-hidden"
+        }
+      >
         <div className="mx-auto w-full max-w-6xl px-4">
           <div className="cases-heading flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <SectionBadge>Vaka Analizleri</SectionBadge>
-              <h2 className="mt-5 font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
+              <h2 className="mt-5 font-display text-5xl font-bold tracking-tight text-slate-900 sm:text-6xl">
                 İşe yarayan işler.
               </h2>
               <div className="mt-6 h-1 w-44 overflow-hidden rounded-full bg-slate-200">
@@ -207,14 +240,14 @@ const CaseStudies = () => {
                 />
               </div>
             </div>
-            <p className="max-w-sm text-sm leading-relaxed text-body">
+            <p className="max-w-sm text-sm leading-relaxed text-slate-500">
               Kaydırmaya devam edin — ödüllü kampanyalarımız yatay olarak akıyor.
             </p>
           </div>
         </div>
 
-        {/* Horizontal track (falls back to native swipe when motion is reduced) */}
-        <div className={"mt-10 " + (reduced ? "overflow-x-auto pb-4" : "overflow-hidden")}>
+        {/* Horizontal track (native swipe when motion is reduced) */}
+        <div className={"mt-10 " + (reduced ? "overflow-x-auto pb-4" : "")}>
           <div
             ref={trackRef}
             className="flex w-max items-stretch gap-8 px-4 will-change-transform sm:px-[max(1rem,calc((100vw-72rem)/2))]"
@@ -222,10 +255,11 @@ const CaseStudies = () => {
             {CASE_STUDIES.map((study) => (
               <CaseStudyCard key={study.id} study={study} />
             ))}
+
             {/* End cap card */}
-            <div className="case-card flex h-[58vh] min-h-[27rem] w-[70vw] max-w-xl shrink-0 flex-col items-center justify-center rounded-3xl border border-dashed border-brand-300 bg-white/60 p-10 text-center backdrop-blur-md">
+            <div className="case-card relative z-10 flex h-[58vh] min-h-[27rem] w-[70vw] max-w-xl shrink-0 flex-col items-center justify-center rounded-3xl border border-dashed border-brand-300 bg-white/60 p-10 text-center backdrop-blur-xl">
               <Sparkles className="h-10 w-10 text-brand-500" aria-hidden="true" />
-              <h3 className="mt-6 font-display text-2xl font-bold text-ink sm:text-3xl">
+              <h3 className="mt-6 font-display text-2xl font-bold text-slate-900 sm:text-3xl">
                 Sıradaki başarı hikayesi sizinki olsun.
               </h3>
               <a
