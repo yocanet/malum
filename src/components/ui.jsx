@@ -21,7 +21,7 @@ export const SectionBadge = ({ children, tone = "violet" }) => (
     className={
       "inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-[0.18em] uppercase " +
       (tone === "teal"
-        ? "border-cyan-200 bg-cyan-50 text-cyan-700"
+        ? "border-steel-200 bg-steel-50 text-steel-600"
         : "border-brand-200 bg-brand-50 text-brand-600")
     }
   >

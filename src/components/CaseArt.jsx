@@ -12,20 +12,20 @@ import React from "react";
 const Defs = ({ id }) => (
   <defs>
     <linearGradient id={`${id}-violet`} x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stopColor="#818CF8" />
-      <stop offset="1" stopColor="#4F46E5" />
+      <stop offset="0" stopColor="#F47F53" />
+      <stop offset="1" stopColor="#D9481B" />
     </linearGradient>
     <linearGradient id={`${id}-teal`} x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stopColor="#22D3EE" />
-      <stop offset="1" stopColor="#0891B2" />
+      <stop offset="0" stopColor="#8DA0AF" />
+      <stop offset="1" stopColor="#6C7E8F" />
     </linearGradient>
     <linearGradient id={`${id}-fuchsia`} x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stopColor="#FCD34D" />
       <stop offset="1" stopColor="#F59E0B" />
     </linearGradient>
     <linearGradient id={`${id}-soft`} x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stopColor="#E0E7FF" />
-      <stop offset="1" stopColor="#CFFAFE" />
+      <stop offset="0" stopColor="#FDE4D8" />
+      <stop offset="1" stopColor="#E7ECF0" />
     </linearGradient>
   </defs>
 );

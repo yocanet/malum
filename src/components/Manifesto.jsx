@@ -61,11 +61,11 @@ const Manifesto = () => {
               className={
                 "manifesto-word mr-[0.32em] inline-block will-change-transform " +
                 (word.gradient
-                  ? "bg-gradient-to-r from-brand-500 via-violet-500 to-cyan-500 bg-clip-text text-transparent"
+                  ? "bg-gradient-to-r from-brand-500 via-amber-400 to-steel-500 bg-clip-text text-transparent"
                   : word.accent === "violet"
                   ? "text-brand-500"
                   : word.accent === "teal"
-                  ? "text-cyan-600"
+                  ? "text-steel-500"
                   : "")
               }
             >

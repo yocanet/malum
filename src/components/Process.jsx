@@ -76,7 +76,7 @@ const Process = () => {
             className="absolute left-0 right-0 top-10 hidden h-0.5 bg-slate-100 lg:block"
             aria-hidden="true"
           >
-            <div className="process-line h-full w-full origin-left bg-gradient-to-r from-brand-500 via-violet-500 to-cyan-500" />
+            <div className="process-line h-full w-full origin-left bg-gradient-to-r from-brand-500 via-amber-400 to-steel-500" />
           </div>
 
           <div className="process-grid grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">

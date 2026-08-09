@@ -35,13 +35,13 @@ export const NAV_LINKS = [
 /* Page background tints, morphed as each section takes the stage. */
 export const SECTION_BG = {
   hero: "#F8FAFC",
-  manifesto: "#EEF2FF",
+  manifesto: "#FEF3EE",
   stats: "#FFFFFF",
   capabilities: "#F8FAFC",
-  cases: "#EEF2FF",
+  cases: "#F3F6F8",
   process: "#FFFFFF",
   team: "#F1F5F9",
-  contact: "#F8FAFC",
+  contact: "#FEF3EE",
 };
 
 export const CAPABILITIES = [
@@ -53,7 +53,7 @@ export const CAPABILITIES = [
       "DV360, Teads ve Adform üzerinde tam yetkin ekiplerle programatik satın alma, gerçek zamanlı optimizasyon ve şeffaf raporlama.",
     tags: ["DV360", "Teads", "Adform"],
     icon: MonitorPlay,
-    accent: "violet",
+    accent: "amber",
   },
   {
     id: "performance",
@@ -73,7 +73,7 @@ export const CAPABILITIES = [
       "Doğru yüzler ve oyun içi sesli reklam formatlarıyla markanızı, erişilmesi en zor kitlelerin tam kalbine taşıyoruz.",
     tags: ["Influencer", "In-Game Audio", "Branded Content"],
     icon: Gamepad2,
-    accent: "violet",
+    accent: "amber",
   },
 ];
 
@@ -91,7 +91,7 @@ export const CASE_STUDIES = [
     ],
     awards: ["Felis", "MIXX"],
     art: "dco",
-    gradient: "from-brand-500/15 via-violet-400/10 to-transparent",
+    gradient: "from-brand-500/15 via-amber-300/10 to-transparent",
     chip: "text-brand-600 bg-brand-50 border-brand-200",
     number: "01",
   },
@@ -108,8 +108,8 @@ export const CASE_STUDIES = [
     ],
     awards: ["Kristal Elma"],
     art: "audio",
-    gradient: "from-cyan-500/15 via-cyan-300/10 to-transparent",
-    chip: "text-cyan-700 bg-cyan-50 border-cyan-200",
+    gradient: "from-steel-500/15 via-steel-300/10 to-transparent",
+    chip: "text-steel-600 bg-steel-50 border-steel-200",
     number: "02",
   },
   {
@@ -125,7 +125,7 @@ export const CASE_STUDIES = [
     ],
     awards: ["MIXX Europe"],
     art: "film",
-    gradient: "from-violet-500/15 via-cyan-400/10 to-transparent",
+    gradient: "from-amber-400/15 via-steel-300/10 to-transparent",
     chip: "text-brand-600 bg-brand-50 border-brand-200",
     number: "03",
   },
@@ -138,7 +138,7 @@ export const TEAM = [
     experience: "27 Yıl Tecrübe",
     years: 27,
     initials: "BK",
-    accent: "violet",
+    accent: "amber",
     bio: "Türkiye'nin önde gelen medya gruplarında satın alma ve strateji liderliği.",
   },
   {
@@ -156,7 +156,7 @@ export const TEAM = [
     experience: "19 Yıl Tecrübe",
     years: 19,
     initials: "ÖG",
-    accent: "violet",
+    accent: "amber",
     bio: "Performans pazarlama ve veri odaklı büyüme operasyonları uzmanı.",
   },
 ];
@@ -238,7 +238,7 @@ export const BENTO_CAPABILITIES = [
     title: "Performance",
     description: "Dönüşüm odaklı medya; her lira ölçülür, her gün optimize edilir.",
     icon: TrendingUp,
-    accent: "cyan",
+    accent: "steel",
     span: "lg:col-span-2",
   },
   {
@@ -246,7 +246,7 @@ export const BENTO_CAPABILITIES = [
     title: "SEO / Analytics",
     description: "Arama görünürlüğü ve veri altyapısı tek çatıda.",
     icon: Search,
-    accent: "violet",
+    accent: "amber",
     span: "lg:col-span-2",
   },
   {
@@ -263,7 +263,7 @@ export const BENTO_CAPABILITIES = [
     description:
       "Oyun içi sesli reklamla ekrana bakmayan kullanıcıya bile ulaşın — kanıtlanmış 14X gelir çarpanı.",
     icon: Gamepad2,
-    accent: "cyan",
+    accent: "steel",
     span: "lg:col-span-3",
   },
   {
@@ -272,7 +272,7 @@ export const BENTO_CAPABILITIES = [
     description:
       "Kantar iş birliğiyle marka bilinirliği ve satış etkisi bağımsız ölçümlenir.",
     icon: Gauge,
-    accent: "violet",
+    accent: "amber",
     span: "lg:col-span-3",
   },
   {
@@ -314,7 +314,7 @@ export const PROCESS_STEPS = [
     description:
       "Markanızı, kitlenizi ve rakip sahayı veriyle okuyoruz; fırsat haritası çıkıyor.",
     icon: Compass,
-    accent: "violet",
+    accent: "amber",
   },
   {
     step: "02",
@@ -330,7 +330,7 @@ export const PROCESS_STEPS = [
     description:
       "Kampanya tüm kanallarda canlıya alınıyor; ilk saatten itibaren canlı izleme.",
     icon: Rocket,
-    accent: "violet",
+    accent: "amber",
   },
   {
     step: "04",

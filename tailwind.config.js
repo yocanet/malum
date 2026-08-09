@@ -15,25 +15,25 @@ export default {
         ],
         display: ["Space Grotesk", "Inter", "ui-sans-serif", "sans-serif"],
       },
-      /* Premium light-mode palette:
-         brand = electric indigo (#6366F1 @ 500) — primary accent
-         steel = cool support grey (#6C7E8F @ 500) — neutrals
-         Limited violet/cyan/amber detail accents come from Tailwind defaults.
-         ink/body are named aliases for the theme text colours. */
+      /* Sparkle Medya corporate palette:
+         brand = kurumsal turuncu (#F15F2C @ 500) — primary accent
+         steel = kurumsal gri    (#6C7E8F @ 500) — secondary support
+         Warm amber detail accents come from Tailwind defaults; no indigo,
+         violet or cyan anywhere. ink/body are named text-colour aliases. */
       colors: {
         ink: "#0F172A",
-        body: "#64748B",
+        body: "#6C7E8F",
         brand: {
-          50: "#EEF2FF",
-          100: "#E0E7FF",
-          200: "#C7D2FE",
-          300: "#A5B4FC",
-          400: "#818CF8",
-          500: "#6366F1",
-          600: "#4F46E5",
-          700: "#4338CA",
-          800: "#3730A3",
-          900: "#312E81",
+          50: "#FEF3EE",
+          100: "#FDE4D8",
+          200: "#FAC8B0",
+          300: "#F7A382",
+          400: "#F47F53",
+          500: "#F15F2C",
+          600: "#D9481B",
+          700: "#B23A15",
+          800: "#8C2E12",
+          900: "#72260F",
         },
         steel: {
           50: "#F3F6F8",

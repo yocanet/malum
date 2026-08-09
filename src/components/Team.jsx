@@ -17,7 +17,7 @@ const TeamCard = ({ member }) => {
       />
       <div className="relative">
         {/* Monogram avatar with gradient ring */}
-        <div className="mx-auto h-24 w-24 rounded-full bg-gradient-to-br from-brand-500 via-violet-500 to-cyan-400 p-[3px] transition-transform duration-500 group-hover:scale-105">
+        <div className="mx-auto h-24 w-24 rounded-full bg-gradient-to-br from-brand-500 via-amber-400 to-steel-400 p-[3px] transition-transform duration-500 group-hover:scale-105">
           <div
             className={
               "flex h-full w-full items-center justify-center rounded-full font-display text-2xl font-bold " +
@@ -46,7 +46,7 @@ const TeamCard = ({ member }) => {
           className="mt-6 flex items-baseline justify-center gap-2"
           aria-label={member.experience}
         >
-          <span className="bg-gradient-to-r from-brand-500 to-cyan-500 bg-clip-text font-display text-6xl font-bold leading-none tracking-tight text-transparent">
+          <span className="bg-gradient-to-r from-brand-500 to-amber-500 bg-clip-text font-display text-6xl font-bold leading-none tracking-tight text-transparent">
             {member.years}
           </span>
           <span className="flex flex-col items-start leading-tight">

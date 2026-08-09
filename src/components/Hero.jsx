@@ -87,16 +87,16 @@ const Hero = () => {
       {/* Gradient mesh background */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="hero-blob absolute -top-24 left-[8%] h-[28rem] w-[28rem] rounded-full bg-brand-300/40 blur-3xl" />
-        <div className="hero-blob absolute right-[5%] top-[12%] h-[24rem] w-[24rem] rounded-full bg-cyan-200/40 blur-3xl" />
-        <div className="hero-blob absolute bottom-[-8rem] left-[30%] h-[26rem] w-[26rem] rounded-full bg-violet-200/40 blur-3xl" />
-        <div className="hero-blob absolute bottom-[10%] right-[22%] h-[18rem] w-[18rem] rounded-full bg-sky-200/40 blur-3xl" />
+        <div className="hero-blob absolute right-[5%] top-[12%] h-[24rem] w-[24rem] rounded-full bg-steel-200/50 blur-3xl" />
+        <div className="hero-blob absolute bottom-[-8rem] left-[30%] h-[26rem] w-[26rem] rounded-full bg-amber-200/40 blur-3xl" />
+        <div className="hero-blob absolute bottom-[10%] right-[22%] h-[18rem] w-[18rem] rounded-full bg-steel-200/40 blur-3xl" />
 
         {/* Rotating conic accent ring */}
         <div
           className="hero-ring absolute left-1/2 top-1/2 h-[46rem] w-[46rem] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-60"
           style={{
             background:
-              "conic-gradient(from 0deg, transparent 0deg, rgba(99,102,241,0.35) 80deg, transparent 160deg, rgba(34,211,238,0.3) 250deg, transparent 330deg)",
+              "conic-gradient(from 0deg, transparent 0deg, rgba(241,95,44,0.32) 80deg, transparent 160deg, rgba(108,126,143,0.32) 250deg, transparent 330deg)",
             maskImage:
               "radial-gradient(circle, transparent 57%, black 59%, black 61%, transparent 63%)",
             WebkitMaskImage:
@@ -143,7 +143,7 @@ const Hero = () => {
             <span className="hero-line-inner block will-change-transform">
               Medyanın{" "}
               <span className="relative inline-block">
-                <span className="bg-gradient-to-r from-brand-500 via-violet-500 to-cyan-500 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-brand-500 via-amber-400 to-steel-500 bg-clip-text text-transparent">
                   ışıltısı
                 </span>
                 <Sparkles

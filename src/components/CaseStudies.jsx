@@ -299,7 +299,7 @@ const CaseStudies = () => {
                 <div className="mt-6 hidden h-1 w-44 overflow-hidden rounded-full bg-slate-200 lg:block">
                   <div
                     ref={progressRef}
-                    className="h-full w-full origin-left scale-x-0 bg-gradient-to-r from-brand-500 to-cyan-500"
+                    className="h-full w-full origin-left scale-x-0 bg-gradient-to-r from-brand-500 to-amber-500"
                   />
                 </div>
               </div>

@@ -86,7 +86,7 @@ const StatsBand = () => {
                 <span className="stat-value text-ink" data-target={stat.value}>
                   {stat.value}
                 </span>
-                <span className="bg-gradient-to-r from-brand-500 to-cyan-500 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-brand-500 to-amber-500 bg-clip-text text-transparent">
                   {stat.suffix}
                 </span>
               </p>

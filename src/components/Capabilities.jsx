@@ -10,15 +10,15 @@ const ACCENTS = {
     glow: "bg-brand-300/40",
     tag: "border-brand-200 bg-brand-50/80 text-brand-600",
   },
-  cyan: {
-    icon: "border-cyan-200 bg-cyan-50 text-cyan-700",
-    glow: "bg-cyan-300/40",
-    tag: "border-cyan-200 bg-cyan-50/80 text-cyan-700",
+  steel: {
+    icon: "border-steel-200 bg-steel-50 text-steel-600",
+    glow: "bg-steel-300/40",
+    tag: "border-steel-200 bg-steel-50/80 text-steel-600",
   },
-  violet: {
-    icon: "border-violet-200 bg-violet-50 text-violet-600",
-    glow: "bg-violet-300/40",
-    tag: "border-violet-200 bg-violet-50/80 text-violet-600",
+  amber: {
+    icon: "border-amber-200 bg-amber-50 text-amber-600",
+    glow: "bg-amber-300/40",
+    tag: "border-amber-200 bg-amber-50/80 text-amber-700",
   },
 };
 
@@ -164,7 +164,7 @@ const Capabilities = () => {
             />
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute -bottom-24 -left-16 h-48 w-48 rounded-full bg-cyan-400/20 blur-3xl"
+              className="pointer-events-none absolute -bottom-24 -left-16 h-48 w-48 rounded-full bg-steel-400/25 blur-3xl"
             />
             <div className="relative">
               <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-white/20 bg-white/10 text-brand-200 backdrop-blur-sm">
