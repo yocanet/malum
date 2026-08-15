@@ -6,7 +6,7 @@ import { TEAM, SECTION_BG } from "../data/content.jsx";
 const TeamCard = ({ member }) => {
   const brand = member.accent === "brand";
   return (
-    <GlassCard className="team-card group relative flex h-full flex-col overflow-hidden p-7 text-center hover:-translate-y-1.5">
+    <GlassCard className="team-card group relative flex h-full flex-col overflow-hidden p-5 text-center hover:-translate-y-1.5 sm:p-6">
       <div
         aria-hidden="true"
         className={
@@ -16,30 +16,34 @@ const TeamCard = ({ member }) => {
       />
       <div className="relative flex h-full flex-col">
         {/* Portrait (public/images/team/…) with monogram fallback */}
-        <div className="mx-auto h-28 w-28 rounded-full bg-gradient-to-br from-brand-500 via-amber-400 to-steel-400 p-[3px] transition-transform duration-500 group-hover:scale-105">
-          <div className="h-full w-full overflow-hidden rounded-full bg-white">
-            <SmartImage
-              src={member.photo}
-              alt={member.name}
-              className="h-full w-full object-cover"
-              fallback={
-                <div
-                  className={
-                    "flex h-full w-full items-center justify-center font-display text-2xl font-bold " +
-                    (brand
-                      ? "bg-gradient-to-br from-brand-50 to-white text-brand-500"
-                      : "bg-gradient-to-br from-steel-50 to-white text-steel-500")
-                  }
-                  aria-hidden="true"
-                >
-                  {member.initials}
-                </div>
-              }
-            />
-          </div>
+        <div className="relative mx-auto aspect-[4/5] w-full overflow-hidden rounded-[1.5rem] bg-gradient-to-br from-brand-50 via-white to-steel-50 ring-1 ring-slate-200/80">
+          <SmartImage
+            src={member.photo}
+            alt={member.name}
+            className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.04]"
+            fallback={
+              <div
+                className={
+                  "flex h-full w-full items-center justify-center font-display text-5xl font-bold " +
+                  (brand ? "text-brand-500" : "text-steel-500")
+                }
+                aria-hidden="true"
+              >
+                {member.initials}
+              </div>
+            }
+          />
+          {/* Brand accent bar */}
+          <span
+            aria-hidden="true"
+            className={
+              "absolute inset-x-0 bottom-0 h-1 " +
+              (brand ? "bg-gradient-to-r from-brand-500 to-amber-400" : "bg-gradient-to-r from-steel-500 to-steel-300")
+            }
+          />
         </div>
 
-        <h3 className="mt-6 font-display text-xl font-bold text-ink">{member.name}</h3>
+        <h3 className="mt-5 font-display text-xl font-bold text-ink">{member.name}</h3>
         <p className={"mt-1.5 text-sm font-semibold " + (brand ? "text-brand-500" : "text-steel-500")}>
           {member.role}
         </p>
