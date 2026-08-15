@@ -215,6 +215,12 @@ export const CASE_STUDIES = [
     ],
     awards: ["Felis 1.'lik", "Kristal Elma Gümüş", "13. MIXX Awards Gümüş", "Martech Awards (2 Kategori)"],
     art: "dco",
+    /* Media: set ONE of videoEmbedUrl (YouTube/Vimeo embed URL) or videoSrc
+       (local .mp4 under public/videos/) + poster. If neither exists the card
+       falls back to `image`, then to the brand SVG art. */
+    videoEmbedUrl: "",
+    videoSrc: "/videos/nesine-dco.mp4",
+    poster: "/images/cases/nesine-dco.jpg",
     image: "/images/cases/nesine-dco.jpg",
     gradient: "from-brand-500/15 via-amber-300/10 to-transparent",
     chip: "text-brand-600 bg-brand-50 border-brand-200",
@@ -234,6 +240,9 @@ export const CASE_STUDIES = [
     ],
     awards: ["MIXX Awards Europe Bronz"],
     art: "film",
+    videoEmbedUrl: "",
+    videoSrc: "/videos/hepsiburada-dizi.mp4",
+    poster: "/images/cases/hepsiburada-dizi.jpg",
     image: "/images/cases/hepsiburada-dizi.jpg",
     gradient: "from-amber-400/15 via-steel-300/10 to-transparent",
     chip: "text-brand-600 bg-brand-50 border-brand-200",
@@ -254,6 +263,9 @@ export const CASE_STUDIES = [
     ],
     awards: ["Kristal Elma"],
     art: "audio",
+    videoEmbedUrl: "",
+    videoSrc: "/videos/hepsiburada-audio.mp4",
+    poster: "/images/cases/hepsiburada-audio.jpg",
     image: "/images/cases/hepsiburada-audio.jpg",
     gradient: "from-steel-500/15 via-steel-300/10 to-transparent",
     chip: "text-steel-600 bg-steel-50 border-steel-200",

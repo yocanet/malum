@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useRef } from "react";
-import { Sparkles, Award, ArrowRight } from "lucide-react";
+import React, { useLayoutEffect, useRef, useState } from "react";
+import { Sparkles, Award, ArrowRight, Play } from "lucide-react";
 import { gsap, ScrollTrigger, prefersReducedMotion, useReducedMotion } from "../lib/motion";
 import { SectionBadge, SmartImage } from "./ui.jsx";
 import CaseArt from "./CaseArt.jsx";
@@ -36,93 +36,167 @@ import { CASE_STUDIES, SECTION_BG } from "../data/content.jsx";
  *
  *   MOBILE   Below lg (and whenever prefers-reduced-motion is set) the scene
  *            is a native horizontal snap-scroll — no sticky, no JS.
+ *
+ *   MEDIA    Each card carries a 16:9 CaseMedia slot: YouTube/Vimeo iframe
+ *            embed, local .mp4 with poster, still image, or brand SVG art.
+ *            Embeds/videos are click-to-load so the sticky scene stays light
+ *            and the horizontal scrub never competes with media decoding.
  */
+
+/**
+ * CaseMedia — 16:9 container.
+ *   1. `videoEmbedUrl`  → YouTube/Vimeo iframe (lazy, click-to-load)
+ *   2. `videoSrc`       → local <video> with poster (click-to-play, muted loop)
+ *   3. `image`          → still image
+ *   4. brand SVG art    → final fallback (never a broken frame)
+ */
+const CaseMedia = ({ study }) => {
+  const [active, setActive] = useState(false);
+  const [videoOk, setVideoOk] = useState(true);
+  const [posterOk, setPosterOk] = useState(true);
+  const hasEmbed = Boolean(study.videoEmbedUrl);
+  const hasVideo = Boolean(study.videoSrc) && videoOk;
+
+  const Art = (
+    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-white to-slate-50 p-6">
+      <CaseArt variant={study.art} className="h-full w-full" />
+    </div>
+  );
+
+  return (
+    <div className="case-media relative aspect-video w-full overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-100 shadow-lg shadow-slate-200/60">
+      {hasEmbed ? (
+        active ? (
+          <iframe
+            src={study.videoEmbedUrl + (study.videoEmbedUrl.includes("?") ? "&" : "?") + "autoplay=1&rel=0"}
+            title={`${study.client} — ${study.label}`}
+            className="absolute inset-0 h-full w-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            loading="lazy"
+          />
+        ) : (
+          <>
+            {posterOk && study.poster ? (
+              <img src={study.poster} alt="" className="absolute inset-0 h-full w-full object-cover" onError={() => setPosterOk(false)} />
+            ) : (
+              Art
+            )}
+            <PlayButton onClick={() => setActive(true)} label="Videoyu oynat" />
+          </>
+        )
+      ) : hasVideo ? (
+        <>
+          <video
+            className="absolute inset-0 h-full w-full object-cover"
+            src={study.videoSrc}
+            poster={posterOk ? study.poster : undefined}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            controls={active}
+            autoPlay={active}
+            onError={() => setVideoOk(false)}
+          />
+          {!active && (
+            <>
+              {!posterOk && Art}
+              <PlayButton onClick={() => setActive(true)} label="Videoyu oynat" />
+            </>
+          )}
+        </>
+      ) : (
+        <SmartImage
+          src={study.image}
+          alt={`${study.client} kampanya görseli`}
+          className="absolute inset-0 h-full w-full object-cover"
+          fallback={Art}
+        />
+      )}
+    </div>
+  );
+};
+
+const PlayButton = ({ onClick, label }) => (
+  <button
+    type="button"
+    onClick={onClick}
+    aria-label={label}
+    className="group/play absolute inset-0 flex items-center justify-center bg-ink/0 transition-colors duration-300 hover:bg-ink/10"
+  >
+    <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white/90 text-brand-500 shadow-xl shadow-brand-500/20 ring-1 ring-slate-200/80 backdrop-blur-xl transition-transform duration-300 group-hover/play:scale-110">
+      <Play className="ml-1 h-7 w-7" aria-hidden="true" fill="currentColor" />
+    </span>
+  </button>
+);
 
 const CaseStudyCard = ({ study }) => (
   <article
-    className="case-card relative z-10 flex h-[56vh] min-h-[27rem] w-[86vw] max-w-3xl shrink-0 snap-center flex-col rounded-[2rem] border border-slate-200/80 bg-white/80 p-7 shadow-xl shadow-slate-200/50 backdrop-blur-xl transition-[border-color] duration-500 hover:border-brand-500/30 sm:p-10 lg:snap-align-none"
+    className="case-card relative z-10 flex h-auto w-[90vw] max-w-5xl lg:h-[62vh] lg:min-h-[30rem] shrink-0 snap-center flex-col rounded-[2rem] border border-slate-200/80 bg-white/80 p-6 shadow-xl shadow-slate-200/50 backdrop-blur-xl transition-[border-color] duration-500 hover:border-brand-500/30 sm:p-8 lg:snap-align-none"
     aria-label={`${study.client} — ${study.label}`}
   >
     <div
       aria-hidden="true"
-      className={
-        "pointer-events-none absolute inset-0 rounded-[2rem] bg-gradient-to-br " + study.gradient
-      }
+      className={"pointer-events-none absolute inset-0 rounded-[2rem] bg-gradient-to-br " + study.gradient}
     />
-
-    {/* Campaign visual: real image if present, brand SVG art as fallback */}
-    <div className="case-art pointer-events-none absolute right-0 top-1/2 hidden h-64 w-64 -translate-y-1/2 sm:block lg:h-72 lg:w-72">
-      <SmartImage
-        src={study.image}
-        alt=""
-        className="h-full w-full rounded-3xl object-cover opacity-90 shadow-lg"
-        fallback={<CaseArt variant={study.art} className="h-full w-full opacity-90" />}
-      />
-    </div>
-
-    {/* Oversized index number */}
     <span
       aria-hidden="true"
-      className="case-number pointer-events-none absolute right-4 top-2 select-none font-display text-[8rem] font-bold leading-none text-ink/[0.05] lg:text-[9rem]"
+      className="case-number pointer-events-none absolute right-6 top-2 select-none font-display text-[7rem] font-bold leading-none text-ink/[0.05] lg:text-[8rem]"
     >
       {study.number}
     </span>
 
-    <div className="relative z-10 flex h-full flex-col sm:max-w-[62%]">
-      <div className="flex flex-wrap items-center gap-2">
-        <span
-          className={
-            "rounded-full border px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] " +
-            study.chip
-          }
-        >
-          {study.label}
-        </span>
-        <span className="rounded-full border border-slate-200 bg-white/70 px-3 py-1.5 text-[11px] font-semibold text-slate-500">
-          {study.year}
-        </span>
+    <div className="relative z-10 grid h-full grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
+      {/* Left — 16:9 media */}
+      <div className="flex flex-col justify-center lg:col-span-6">
+        <CaseMedia study={study} />
       </div>
 
-      <h3 className="mt-4 font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl">
-        {study.client}
-      </h3>
-      <p className="mt-3 max-w-xl text-sm leading-relaxed text-body sm:text-base">
-        {study.summary}
-      </p>
-
-      {/* Awards */}
-      <div className="mt-4 flex flex-wrap gap-2">
-        {study.awards.map((award) => (
-          <span
-            key={award}
-            className="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-gradient-to-b from-amber-50 to-white px-3 py-1 text-[11px] font-semibold text-amber-700 shadow-sm"
-          >
-            <Award className="h-3.5 w-3.5" aria-hidden="true" />
-            {award}
+      {/* Right — content */}
+      <div className="flex min-h-0 flex-col lg:col-span-6">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className={"rounded-full border px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] " + study.chip}>
+            {study.label}
           </span>
-        ))}
-      </div>
+          <span className="rounded-full border border-slate-200 bg-white/70 px-3 py-1.5 text-[11px] font-semibold text-slate-500">
+            {study.year}
+          </span>
+        </div>
 
-      <div
-        className={
-          "mt-auto grid gap-4 border-t border-slate-200/70 pt-6 " +
-          (study.stats.length > 3 ? "grid-cols-2 sm:grid-cols-4" : "grid-cols-3")
-        }
-      >
-        {study.stats.map((stat) => {
-          const StatIcon = stat.icon;
-          return (
-            <div key={stat.label} className="flex flex-col">
-              <StatIcon className="mb-2 h-5 w-5 text-brand-400" aria-hidden="true" />
-              <span className="whitespace-nowrap font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-                {stat.value}
-              </span>
-              <span className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400 sm:text-xs">
-                {stat.label}
-              </span>
-            </div>
-          );
-        })}
+        <h3 className="mt-4 font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+          {study.client}
+        </h3>
+        <p className="mt-3 text-sm leading-relaxed text-body sm:text-base">{study.summary}</p>
+
+        <div className="mt-4 flex flex-wrap gap-2">
+          {study.awards.map((award) => (
+            <span
+              key={award}
+              className="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-gradient-to-b from-amber-50 to-white px-3 py-1 text-[11px] font-semibold text-amber-700 shadow-sm"
+            >
+              <Award className="h-3.5 w-3.5" aria-hidden="true" />
+              {award}
+            </span>
+          ))}
+        </div>
+
+        <div className={"mt-auto grid gap-4 border-t border-slate-200/70 pt-6 " + (study.stats.length > 3 ? "grid-cols-2 sm:grid-cols-4" : "grid-cols-3")}>
+          {study.stats.map((stat) => {
+            const StatIcon = stat.icon;
+            return (
+              <div key={stat.label} className="flex flex-col">
+                <StatIcon className="mb-2 h-5 w-5 text-brand-400" aria-hidden="true" />
+                <span className="whitespace-nowrap font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+                  {stat.value}
+                </span>
+                <span className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400 sm:text-xs">
+                  {stat.label}
+                </span>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   </article>
@@ -223,14 +297,14 @@ const CaseStudies = () => {
           );
         }
 
-        const art = card.querySelector(".case-art");
-        if (art) {
+        const media = card.querySelector(".case-media");
+        if (media) {
           gsap.fromTo(
-            art,
-            { xPercent: 10, rotate: 4 },
+            media,
+            { xPercent: 4, rotate: 0.6 },
             {
-              xPercent: -5,
-              rotate: -2,
+              xPercent: -2,
+              rotate: -0.3,
               ease: "none",
               scrollTrigger: {
                 trigger: card,
@@ -343,7 +417,7 @@ const CaseStudies = () => {
               ))}
 
               {/* End cap card */}
-              <div className="case-card relative z-10 flex h-[56vh] min-h-[27rem] w-[70vw] max-w-xl shrink-0 snap-center flex-col items-center justify-center rounded-[2rem] border border-dashed border-brand-300 bg-white/60 p-10 text-center backdrop-blur-xl">
+              <div className="case-card relative z-10 flex h-auto min-h-[22rem] w-[70vw] max-w-xl lg:h-[62vh] lg:min-h-[30rem] shrink-0 snap-center flex-col items-center justify-center rounded-[2rem] border border-dashed border-brand-300 bg-white/60 p-10 text-center backdrop-blur-xl">
                 <Sparkles className="h-10 w-10 text-brand-500" aria-hidden="true" />
                 <h3 className="mt-6 font-display text-2xl font-bold text-ink sm:text-3xl">
                   Sıradaki başarı hikayesi sizinki olsun.
