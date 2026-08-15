@@ -2,7 +2,8 @@ import React, { useLayoutEffect, useRef } from "react";
 import { Sparkles, ArrowRight, ArrowUpRight, ArrowDown } from "lucide-react";
 import { gsap, prefersReducedMotion } from "../lib/motion";
 import { SectionBadge } from "./ui.jsx";
-import { SECTION_BG, CLIENT_MARKS } from "../data/content.jsx";
+import { SECTION_BG, LOGO } from "../data/content.jsx";
+import { SmartImage } from "./ui.jsx";
 
 /**
  * Hero — premium light-mode opening. Deliberately UNPINNED: the load-in
@@ -127,15 +128,18 @@ const Hero = () => {
           }}
         />
 
-        {/* Architectural watermark */}
-        <span className="hero-watermark absolute bottom-[-1vw] left-1/2 -translate-x-1/2 select-none whitespace-nowrap font-display text-[16vw] font-bold leading-none tracking-tight text-ink/[0.03]">
-          SPARKLE
-        </span>
+        {/* Brand mark watermark */}
+        <SmartImage
+          src={LOGO.mark}
+          alt=""
+          className="hero-watermark absolute -right-[6vw] top-[10vh] w-[42vw] max-w-[36rem] opacity-[0.06]"
+          fallback={null}
+        />
       </div>
 
       <div className="hero-content relative z-10 mx-auto flex max-w-5xl flex-col items-center text-center">
         <div className="hero-soft">
-          <SectionBadge>Medya Planlama &amp; Performans Ajansı</SectionBadge>
+          <SectionBadge>Medya Stratejisi &amp; Performans Ajansı</SectionBadge>
         </div>
 
         <h1 className="mt-8 font-display text-[2.85rem] font-bold leading-[1.02] tracking-[-0.03em] text-ink sm:text-7xl lg:text-8xl">
@@ -154,45 +158,40 @@ const Hero = () => {
             </span>
           </span>
           <span className="block overflow-hidden pb-2">
-            <span className="hero-line-inner block will-change-transform">
-              performansa dönüşür.
-            </span>
+            <span className="hero-line-inner block will-change-transform">elimizde.</span>
           </span>
         </h1>
 
         <p className="hero-soft mt-7 max-w-2xl text-lg leading-relaxed text-body sm:text-xl">
-          Sparkle Medya; strateji, performans, veri optimizasyonu ve yayıncılığı
-          bütüncül ele alarak markalar için yüksek görünürlük ve somut büyüme
-          sağlar.
+          Markaların iletişim yatırımlarını strateji, planlama, satın alma ve
+          ölçümleme odağında uçtan uca yönetiyoruz.
         </p>
 
         <div className="hero-soft mt-10 flex w-full flex-col items-center justify-center gap-4 sm:w-auto sm:flex-row">
           <a
-            href="#case-studies"
+            href="#vakalar"
             className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-500 px-8 py-4 text-sm font-semibold text-white shadow-xl shadow-brand-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-400 hover:shadow-2xl hover:shadow-brand-500/40 sm:w-auto"
           >
-            Vakaları İncele
+            Ödüllü Vakaları İncele
             <ArrowRight
               className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
               aria-hidden="true"
             />
           </a>
           <a
-            href="#contact"
+            href="#iletisim"
             className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-slate-200/80 bg-white/70 px-8 py-4 text-sm font-semibold text-ink shadow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-brand-300 hover:bg-brand-50/70 hover:text-brand-600 hover:shadow-lg hover:shadow-brand-500/10 sm:w-auto"
           >
-            İletişime Geç
+            Bizimle İletişime Geçin
             <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
           </a>
         </div>
 
-        {/* Trust strip */}
+        {/* Brand mark strip */}
         <div className="hero-soft mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
-          {CLIENT_MARKS.map((mark, i) => (
+          {["Strateji", "Planlama", "Satın Alma", "Ölçümleme"].map((mark, i) => (
             <React.Fragment key={mark}>
-              {i > 0 && (
-                <span className="h-1 w-1 rounded-full bg-slate-300" aria-hidden="true" />
-              )}
+              {i > 0 && <span className="h-1 w-1 rounded-full bg-brand-300" aria-hidden="true" />}
               <span className="font-display">{mark}</span>
             </React.Fragment>
           ))}

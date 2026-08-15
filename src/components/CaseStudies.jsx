@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useRef } from "react";
 import { Sparkles, Award, ArrowRight } from "lucide-react";
 import { gsap, ScrollTrigger, prefersReducedMotion, useReducedMotion } from "../lib/motion";
-import { SectionBadge } from "./ui.jsx";
+import { SectionBadge, SmartImage } from "./ui.jsx";
 import CaseArt from "./CaseArt.jsx";
 import { CASE_STUDIES, SECTION_BG } from "../data/content.jsx";
 
@@ -40,21 +40,25 @@ import { CASE_STUDIES, SECTION_BG } from "../data/content.jsx";
 
 const CaseStudyCard = ({ study }) => (
   <article
-    className="case-card relative z-10 flex h-[52vh] min-h-[24rem] w-[85vw] max-w-3xl shrink-0 snap-center flex-col rounded-3xl border border-slate-200/80 bg-white/80 p-7 shadow-xl shadow-slate-200/50 backdrop-blur-xl transition-[border-color] duration-500 hover:border-brand-500/30 sm:p-10 lg:snap-align-none"
+    className="case-card relative z-10 flex h-[56vh] min-h-[27rem] w-[86vw] max-w-3xl shrink-0 snap-center flex-col rounded-[2rem] border border-slate-200/80 bg-white/80 p-7 shadow-xl shadow-slate-200/50 backdrop-blur-xl transition-[border-color] duration-500 hover:border-brand-500/30 sm:p-10 lg:snap-align-none"
     aria-label={`${study.client} — ${study.label}`}
   >
     <div
       aria-hidden="true"
       className={
-        "pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br " + study.gradient
+        "pointer-events-none absolute inset-0 rounded-[2rem] bg-gradient-to-br " + study.gradient
       }
     />
 
-    {/* Abstract campaign artwork */}
-    <CaseArt
-      variant={study.art}
-      className="case-art pointer-events-none absolute right-0 top-1/2 hidden h-64 w-64 -translate-y-1/2 opacity-90 sm:block lg:h-72 lg:w-72"
-    />
+    {/* Campaign visual: real image if present, brand SVG art as fallback */}
+    <div className="case-art pointer-events-none absolute right-0 top-1/2 hidden h-64 w-64 -translate-y-1/2 sm:block lg:h-72 lg:w-72">
+      <SmartImage
+        src={study.image}
+        alt=""
+        className="h-full w-full rounded-3xl object-cover opacity-90 shadow-lg"
+        fallback={<CaseArt variant={study.art} className="h-full w-full opacity-90" />}
+      />
+    </div>
 
     {/* Oversized index number */}
     <span
@@ -64,20 +68,34 @@ const CaseStudyCard = ({ study }) => (
       {study.number}
     </span>
 
-    <div className="relative z-10 flex h-full flex-col sm:max-w-[60%]">
-      <div className="flex flex-wrap items-center gap-3">
+    <div className="relative z-10 flex h-full flex-col sm:max-w-[62%]">
+      <div className="flex flex-wrap items-center gap-2">
         <span
           className={
-            "rounded-full border px-4 py-1.5 text-xs font-bold uppercase tracking-[0.14em] " +
+            "rounded-full border px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] " +
             study.chip
           }
         >
           {study.label}
         </span>
+        <span className="rounded-full border border-slate-200 bg-white/70 px-3 py-1.5 text-[11px] font-semibold text-slate-500">
+          {study.year}
+        </span>
+      </div>
+
+      <h3 className="mt-4 font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl">
+        {study.client}
+      </h3>
+      <p className="mt-3 max-w-xl text-sm leading-relaxed text-body sm:text-base">
+        {study.summary}
+      </p>
+
+      {/* Awards */}
+      <div className="mt-4 flex flex-wrap gap-2">
         {study.awards.map((award) => (
           <span
             key={award}
-            className="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-gradient-to-b from-amber-50 to-white px-3 py-1.5 text-xs font-semibold text-amber-700 shadow-sm"
+            className="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-gradient-to-b from-amber-50 to-white px-3 py-1 text-[11px] font-semibold text-amber-700 shadow-sm"
           >
             <Award className="h-3.5 w-3.5" aria-hidden="true" />
             {award}
@@ -85,20 +103,18 @@ const CaseStudyCard = ({ study }) => (
         ))}
       </div>
 
-      <h3 className="mt-5 font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl lg:text-5xl">
-        {study.client}
-      </h3>
-      <p className="mt-3 max-w-xl text-sm leading-relaxed text-body sm:mt-4 sm:text-lg">
-        {study.summary}
-      </p>
-
-      <div className="mt-auto grid grid-cols-3 gap-4 border-t border-slate-200/70 pt-6 sm:pt-8">
+      <div
+        className={
+          "mt-auto grid gap-4 border-t border-slate-200/70 pt-6 " +
+          (study.stats.length > 3 ? "grid-cols-2 sm:grid-cols-4" : "grid-cols-3")
+        }
+      >
         {study.stats.map((stat) => {
           const StatIcon = stat.icon;
           return (
             <div key={stat.label} className="flex flex-col">
               <StatIcon className="mb-2 h-5 w-5 text-brand-400" aria-hidden="true" />
-              <span className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+              <span className="whitespace-nowrap font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
                 {stat.value}
               </span>
               <span className="mt-1 text-[10px] font-semibold uppercase tracking-wider text-slate-400 sm:text-xs">
@@ -280,7 +296,7 @@ const CaseStudies = () => {
 
   return (
     <section
-      id="case-studies"
+      id="vakalar"
       ref={wrapRef}
       data-bg={SECTION_BG.cases}
       className="relative z-[1]"
@@ -292,7 +308,7 @@ const CaseStudies = () => {
           <div className="relative z-20 mx-auto w-full max-w-6xl px-4">
             <div className="cases-heading flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div>
-                <SectionBadge>Vaka Analizleri</SectionBadge>
+                <SectionBadge>Ödüllü Vakalar</SectionBadge>
                 <h2 className="mt-5 font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl lg:text-6xl">
                   İşe yarayan işler.
                 </h2>
@@ -327,13 +343,13 @@ const CaseStudies = () => {
               ))}
 
               {/* End cap card */}
-              <div className="case-card relative z-10 flex h-[52vh] min-h-[24rem] w-[70vw] max-w-xl shrink-0 snap-center flex-col items-center justify-center rounded-3xl border border-dashed border-brand-300 bg-white/60 p-10 text-center backdrop-blur-xl">
+              <div className="case-card relative z-10 flex h-[56vh] min-h-[27rem] w-[70vw] max-w-xl shrink-0 snap-center flex-col items-center justify-center rounded-[2rem] border border-dashed border-brand-300 bg-white/60 p-10 text-center backdrop-blur-xl">
                 <Sparkles className="h-10 w-10 text-brand-500" aria-hidden="true" />
                 <h3 className="mt-6 font-display text-2xl font-bold text-ink sm:text-3xl">
                   Sıradaki başarı hikayesi sizinki olsun.
                 </h3>
                 <a
-                  href="#contact"
+                  href="#iletisim"
                   className="mt-8 inline-flex items-center gap-2 rounded-full bg-brand-500 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-400"
                 >
                   Projenizi Konuşalım

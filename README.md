@@ -23,6 +23,10 @@ npm run build    # production build → dist/
 npm run preview  # build'i lokalde görüntüle
 ```
 
+## Görseller
+
+Tüm görseller `public/images/…` altından çağrılır; dosya adları ve boyut önerileri için `public/images/README.md`. Logo seti hazır; ekip fotoğrafları, vaka görselleri ve teknoloji/akreditasyon logoları eklendiğinde fallback'lar otomatik yerini bırakır.
+
 ## Yapı
 
 ```
