@@ -1,6 +1,7 @@
 import React from "react";
 import { Mail, MapPin, Phone, Globe } from "lucide-react";
 import { Logo, LinkedInIcon } from "./ui.jsx";
+import YocaSignature from "./branding/YocaSignature.jsx";
 import { NAV_LINKS, CAPABILITY_PILLARS, COMPANY } from "../data/content.jsx";
 
 /** Rich footer on dark ink — white logo variant. */
@@ -87,7 +88,8 @@ const Footer = () => (
         </div>
       </div>
 
-      <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
+      {/* Footer bottom bar — copyright left, legal centre, Yoca signature right */}
+      <div className="footer-bottom mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-8">
         <p className="text-xs text-slate-500">
           © {new Date().getFullYear()} Sparkle Medya. Tüm hakları saklıdır.
         </p>
@@ -95,6 +97,7 @@ const Footer = () => (
           <a href="#home" className="transition-colors hover:text-slate-300">Gizlilik Politikası</a>
           <a href="#home" className="transition-colors hover:text-slate-300">KVKK Aydınlatma Metni</a>
         </div>
+        <YocaSignature source={COMPANY.web} theme="dark" className="footer-signature" />
       </div>
     </div>
   </footer>
