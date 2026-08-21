@@ -1,55 +1,18 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
-import { Sparkles, Award, ArrowRight, Play } from "lucide-react";
-import { gsap, ScrollTrigger, prefersReducedMotion, useReducedMotion } from "../lib/motion";
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { ArrowLeft, ArrowRight, Play } from "lucide-react";
+import { gsap, prefersReducedMotion } from "../lib/motion";
 import { SectionBadge, SmartImage } from "./ui.jsx";
 import CaseArt from "./CaseArt.jsx";
-import { CASE_STUDIES, SECTION_BG } from "../data/content.jsx";
+import { CASE_STUDIES, CASES_TITLE, SECTION_BG } from "../data/content.jsx";
 
 /**
- * Case Studies — horizontal storytelling scene, production edition.
- *
- * How the layout works (and why the live-site bugs can't recur):
- *
- *   RUNWAY   The section's height is NOT a fixed h-[300vh]. It is computed
- *            from the real track: innerHeight + (track.scrollWidth -
- *            innerWidth) + a settle buffer. The vertical scroll distance
- *            therefore always matches the horizontal travel exactly — the
- *            next section can never appear before the last card lands, and
- *            the scene never releases early.
- *
- *   SCENE    The inner viewport is CSS `sticky top-0 h-screen overflow-
- *            hidden` (desktop only). No GSAP pin → no pin-spacer → nothing
- *            to jump or flicker when scrolling back up.
- *
- *   DRIVE    GSAP only scrubs the track's `x` against runway progress
- *            (`invalidateOnRefresh` re-measures on every refresh). Card
- *            micro-motion (scale/y/rotate/shadow, number & art parallax) is
- *            scrub-only — fully reversible, no opacity cliffs.
- *
- *   SYNC     ResizeObserver on the track + `document.fonts.ready` +
- *            a `refreshInit` hook keep the runway height and travel distance
- *            calibrated through font swaps, image loads and window resizes.
- *
- *   LAYERS   Heading block and track are separate flex rows (no absolute
- *            overlap): heading z-20, track z-10, and the heading row keeps
- *            its own vertical space in the scene composition.
- *
- *   MOBILE   Below lg (and whenever prefers-reduced-motion is set) the scene
- *            is a native horizontal snap-scroll — no sticky, no JS.
- *
- *   MEDIA    Each card carries a 16:9 CaseMedia slot: YouTube/Vimeo iframe
- *            embed, local .mp4 with poster, still image, or brand SVG art.
- *            Embeds/videos are click-to-load so the sticky scene stays light
- *            and the horizontal scrub never competes with media decoding.
+ * Öne Çıkan İşler — normal vertical page flow (rev. slide 16: pinned
+ * horizontal scroll removed). The cards live in a native horizontal
+ * carousel driven three ways: prev/next arrow controls, a progress
+ * indicator, and direct horizontal scroll / drag (mouse, trackpad, touch).
  */
 
-/**
- * CaseMedia — 16:9 container.
- *   1. `videoEmbedUrl`  → YouTube/Vimeo iframe (lazy, click-to-load)
- *   2. `videoSrc`       → local <video> with poster (click-to-play, muted loop)
- *   3. `image`          → still image
- *   4. brand SVG art    → final fallback (never a broken frame)
- */
+/* ---- 16:9 media: YouTube/Vimeo embed → local mp4 → image → SVG art ---- */
 const CaseMedia = ({ study }) => {
   const [active, setActive] = useState(false);
   const [videoOk, setVideoOk] = useState(true);
@@ -68,7 +31,11 @@ const CaseMedia = ({ study }) => {
       {hasEmbed ? (
         active ? (
           <iframe
-            src={study.videoEmbedUrl + (study.videoEmbedUrl.includes("?") ? "&" : "?") + "autoplay=1&rel=0"}
+            src={
+              study.videoEmbedUrl +
+              (study.videoEmbedUrl.includes("?") ? "&" : "?") +
+              "autoplay=1&rel=0"
+            }
             title={`${study.client} — ${study.label}`}
             className="absolute inset-0 h-full w-full"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -78,7 +45,13 @@ const CaseMedia = ({ study }) => {
         ) : (
           <>
             {posterOk && study.poster ? (
-              <img src={study.poster} alt="" className="absolute inset-0 h-full w-full object-cover" onError={() => setPosterOk(false)} />
+              <img
+                src={study.poster}
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover"
+                loading="lazy"
+                onError={() => setPosterOk(false)}
+              />
             ) : (
               Art
             )}
@@ -131,9 +104,10 @@ const PlayButton = ({ onClick, label }) => (
   </button>
 );
 
+/* ---- Card ---- */
 const CaseStudyCard = ({ study }) => (
   <article
-    className="case-card relative z-10 flex h-auto w-[90vw] max-w-5xl lg:h-[62vh] lg:min-h-[30rem] shrink-0 snap-center flex-col rounded-[2rem] border border-slate-200/80 bg-white/80 p-6 shadow-xl shadow-slate-200/50 backdrop-blur-xl transition-[border-color] duration-500 hover:border-brand-500/30 sm:p-8 lg:snap-align-none"
+    className="case-card relative z-10 flex w-[90vw] max-w-5xl shrink-0 snap-center flex-col rounded-[2rem] border border-slate-200/80 bg-white/80 p-6 shadow-xl shadow-slate-200/50 backdrop-blur-xl transition-[border-color] duration-500 hover:border-brand-500/30 sm:p-8"
     aria-label={`${study.client} — ${study.label}`}
   >
     <div
@@ -142,21 +116,26 @@ const CaseStudyCard = ({ study }) => (
     />
     <span
       aria-hidden="true"
-      className="case-number pointer-events-none absolute right-6 top-2 select-none font-display text-[7rem] font-bold leading-none text-ink/[0.05] lg:text-[8rem]"
+      className="pointer-events-none absolute right-6 top-1 select-none font-display text-[6rem] font-bold leading-none text-ink/[0.05] lg:text-[7rem]"
     >
       {study.number}
     </span>
 
-    <div className="relative z-10 grid h-full grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
+    <div className="relative z-10 grid grid-cols-1 gap-6 lg:grid-cols-12 lg:gap-8">
       {/* Left — 16:9 media */}
       <div className="flex flex-col justify-center lg:col-span-6">
         <CaseMedia study={study} />
       </div>
 
       {/* Right — content */}
-      <div className="flex min-h-0 flex-col lg:col-span-6">
+      <div className="flex flex-col lg:col-span-6">
         <div className="flex flex-wrap items-center gap-2">
-          <span className={"rounded-full border px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] " + study.chip}>
+          <span
+            className={
+              "rounded-full border px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] " +
+              study.chip
+            }
+          >
             {study.label}
           </span>
           <span className="rounded-full border border-slate-200 bg-white/70 px-3 py-1.5 text-[11px] font-semibold text-slate-500">
@@ -169,24 +148,43 @@ const CaseStudyCard = ({ study }) => (
         </h3>
         <p className="mt-3 text-sm leading-relaxed text-body sm:text-base">{study.summary}</p>
 
-        <div className="mt-4 flex flex-wrap gap-2">
+        {/* Awards — logo + achievement beneath (rev. slide 17) */}
+        <div className="mt-5 flex flex-wrap gap-3">
           {study.awards.map((award) => (
-            <span
-              key={award}
-              className="inline-flex items-center gap-1.5 rounded-full border border-amber-200 bg-gradient-to-b from-amber-50 to-white px-3 py-1 text-[11px] font-semibold text-amber-700 shadow-sm"
+            <div
+              key={award.name + award.text}
+              className="flex w-[9.5rem] flex-col items-center rounded-xl border border-slate-200/80 bg-white/85 px-3 py-2.5 text-center shadow-sm"
             >
-              <Award className="h-3.5 w-3.5" aria-hidden="true" />
-              {award}
-            </span>
+              <span className="flex h-9 items-center">
+                <SmartImage
+                  src={award.logo}
+                  alt={award.name}
+                  className="max-h-8 w-auto max-w-[8rem] object-contain"
+                  fallback={
+                    <span className="font-display text-xs font-bold text-slate-600">
+                      {award.name}
+                    </span>
+                  }
+                />
+              </span>
+              <span className="mt-1.5 text-[10px] font-semibold leading-tight text-slate-500">
+                {award.text}
+              </span>
+            </div>
           ))}
         </div>
 
-        <div className={"mt-auto grid gap-4 border-t border-slate-200/70 pt-6 " + (study.stats.length > 3 ? "grid-cols-2 sm:grid-cols-4" : "grid-cols-3")}>
+        <div
+          className={
+            "mt-6 grid gap-4 border-t border-slate-200/70 pt-5 " +
+            (study.stats.length > 3 ? "grid-cols-2 sm:grid-cols-4" : "grid-cols-3")
+          }
+        >
           {study.stats.map((stat) => {
             const StatIcon = stat.icon;
             return (
               <div key={stat.label} className="flex flex-col">
-                <StatIcon className="mb-2 h-5 w-5 text-brand-400" aria-hidden="true" />
+                <StatIcon className="mb-1.5 h-5 w-5 text-brand-400" aria-hidden="true" />
                 <span className="whitespace-nowrap font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
                   {stat.value}
                 </span>
@@ -202,153 +200,73 @@ const CaseStudyCard = ({ study }) => (
   </article>
 );
 
+/* ---- Carousel section ---- */
 const CaseStudies = () => {
-  const wrapRef = useRef(null);
-  const trackRef = useRef(null);
+  const sectionRef = useRef(null);
+  const viewportRef = useRef(null);
   const progressRef = useRef(null);
-  const reduced = useReducedMotion();
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
+  const drag = useRef({ down: false, startX: 0, startLeft: 0, moved: false });
+
+  const updateProgress = useCallback(() => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const max = el.scrollWidth - el.clientWidth;
+    const p = max > 0 ? el.scrollLeft / max : 0;
+    if (progressRef.current) progressRef.current.style.transform = `scaleX(${p})`;
+    setAtStart(el.scrollLeft < 8);
+    setAtEnd(el.scrollLeft > max - 8);
+  }, []);
+
+  useEffect(() => {
+    const el = viewportRef.current;
+    if (!el) return undefined;
+    updateProgress();
+    el.addEventListener("scroll", updateProgress, { passive: true });
+    const ro = new ResizeObserver(updateProgress);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener("scroll", updateProgress);
+      ro.disconnect();
+    };
+  }, [updateProgress]);
+
+  const scrollByCard = (dir) => {
+    const el = viewportRef.current;
+    if (!el) return;
+    const card = el.querySelector(".case-card");
+    const step = card ? card.getBoundingClientRect().width + 24 : el.clientWidth * 0.9;
+    el.scrollBy({ left: dir * step, behavior: "smooth" });
+  };
+
+  /* Drag-to-scroll with the mouse (touch already scrolls natively). */
+  const onPointerDown = (e) => {
+    if (e.pointerType !== "mouse") return;
+    const el = viewportRef.current;
+    drag.current = { down: true, startX: e.clientX, startLeft: el.scrollLeft, moved: false };
+  };
+  const onPointerMove = (e) => {
+    if (!drag.current.down) return;
+    const dx = e.clientX - drag.current.startX;
+    if (Math.abs(dx) > 4) drag.current.moved = true;
+    viewportRef.current.scrollLeft = drag.current.startLeft - dx;
+  };
+  const endDrag = () => {
+    drag.current.down = false;
+  };
+  const onClickCapture = (e) => {
+    /* Swallow the click that ends a drag so buttons/links don't fire. */
+    if (drag.current.moved) {
+      e.stopPropagation();
+      e.preventDefault();
+      drag.current.moved = false;
+    }
+  };
 
   useLayoutEffect(() => {
-    const wrap = wrapRef.current;
-    const track = trackRef.current;
-    if (!wrap || !track) return undefined;
     if (prefersReducedMotion()) return undefined;
-
-    const mm = gsap.matchMedia(wrapRef);
-
-    /* Desktop: sticky scene + scrubbed horizontal drive */
-    mm.add("(min-width: 1024px)", () => {
-      const getScrollAmount = () => Math.max(0, track.scrollWidth - window.innerWidth);
-
-      /* Runway height = viewport + horizontal travel × SPEED + settle buffer.
-         SPEED > 1 slows the horizontal flow relative to the wheel, which is
-         what makes the scene feel properly "locked" while it plays. */
-      const SPEED = 1.6;
-      const setRunway = () => {
-        const buffer = Math.round(window.innerHeight * 0.2);
-        wrap.style.height = `${Math.round(
-          window.innerHeight + getScrollAmount() * SPEED + buffer
-        )}px`;
-      };
-      setRunway();
-
-      /* Keep runway current whenever ScrollTrigger recalculates. */
-      ScrollTrigger.addEventListener("refreshInit", setRunway);
-
-      const horizontalTween = gsap.to(track, {
-        x: () => -getScrollAmount(),
-        ease: "none",
-        scrollTrigger: {
-          trigger: wrap,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            if (progressRef.current) {
-              progressRef.current.style.transform = `scaleX(${self.progress})`;
-            }
-          },
-        },
-      });
-
-      /* Scrub-only micro-motion — reversible, no opacity cliffs. */
-      gsap.utils.toArray(".case-card").forEach((card) => {
-        gsap.fromTo(
-          card,
-          {
-            scale: 0.94,
-            y: 24,
-            rotate: 1.2,
-            boxShadow: "0 8px 24px -16px rgba(15,23,42,0.12)",
-          },
-          {
-            scale: 1,
-            y: 0,
-            rotate: 0,
-            boxShadow: "0 24px 48px -20px rgba(15,23,42,0.18)",
-            ease: "none",
-            scrollTrigger: {
-              trigger: card,
-              containerAnimation: horizontalTween,
-              start: "left 100%",
-              end: "left 58%",
-              scrub: true,
-            },
-          }
-        );
-
-        const number = card.querySelector(".case-number");
-        if (number) {
-          gsap.fromTo(
-            number,
-            { xPercent: 24 },
-            {
-              xPercent: -12,
-              ease: "none",
-              scrollTrigger: {
-                trigger: card,
-                containerAnimation: horizontalTween,
-                start: "left right",
-                end: "right left",
-                scrub: true,
-              },
-            }
-          );
-        }
-
-        const media = card.querySelector(".case-media");
-        if (media) {
-          gsap.fromTo(
-            media,
-            { xPercent: 4, rotate: 0.6 },
-            {
-              xPercent: -2,
-              rotate: -0.3,
-              ease: "none",
-              scrollTrigger: {
-                trigger: card,
-                containerAnimation: horizontalTween,
-                start: "left right",
-                end: "right left",
-                scrub: true,
-              },
-            }
-          );
-        }
-      });
-
-      /* Track geometry can change (fonts, images, viewport) — recalibrate. */
-      let lastWidth = track.scrollWidth;
-      const ro = new ResizeObserver(() => {
-        if (track.scrollWidth !== lastWidth) {
-          lastWidth = track.scrollWidth;
-          setRunway();
-          ScrollTrigger.refresh();
-        }
-      });
-      ro.observe(track);
-
-      if (document.fonts?.ready) {
-        document.fonts.ready.then(() => {
-          setRunway();
-          ScrollTrigger.refresh();
-        });
-      }
-
-      const onLoad = () => ScrollTrigger.refresh();
-      window.addEventListener("load", onLoad);
-
-      return () => {
-        window.removeEventListener("load", onLoad);
-        ScrollTrigger.removeEventListener("refreshInit", setRunway);
-        ro.disconnect();
-        wrap.style.height = "";
-      };
-    });
-
-    /* All viewports: heading entrance */
-    mm.add("(min-width: 0px)", () => {
+    const ctx = gsap.context(() => {
       gsap.fromTo(
         ".cases-heading > *",
         { y: 32, opacity: 0 },
@@ -358,81 +276,102 @@ const CaseStudies = () => {
           duration: 0.8,
           stagger: 0.1,
           ease: "power3.out",
-          scrollTrigger: { trigger: wrap, start: "top 80%" },
+          scrollTrigger: { trigger: sectionRef.current, start: "top 80%" },
         }
       );
-    });
-
-    return () => mm.revert();
+      gsap.fromTo(
+        ".case-card",
+        { y: 44, opacity: 0, scale: 0.98 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.9,
+          stagger: 0.12,
+          ease: "power3.out",
+          scrollTrigger: { trigger: ".cases-viewport", start: "top 85%" },
+        }
+      );
+    }, sectionRef);
+    return () => ctx.revert();
   }, []);
 
-  const sticky = !reduced;
+  const arrowCls = (disabled) =>
+    "inline-flex h-11 w-11 items-center justify-center rounded-full border shadow-sm transition-all duration-300 " +
+    (disabled
+      ? "cursor-default border-slate-200 bg-white/60 text-slate-300"
+      : "border-slate-200 bg-white text-ink hover:-translate-y-0.5 hover:border-brand-400 hover:bg-brand-50 hover:text-brand-600 hover:shadow-lg");
 
   return (
     <section
-      id="vakalar"
-      ref={wrapRef}
+      id="one-cikan-isler"
+      ref={sectionRef}
       data-bg={SECTION_BG.cases}
-      className="relative z-[1]"
+      className="relative py-20"
     >
-      {/* Sticky scene viewport (desktop); plain flow on mobile/reduced */}
-      <div className={sticky ? "lg:sticky lg:top-0 lg:h-screen lg:overflow-hidden" : ""}>
-        <div className="flex h-full flex-col justify-center gap-8 py-16 lg:gap-10 lg:py-0 lg:pt-20">
-          {/* Heading row — own space, above the track, never overlapped */}
-          <div className="relative z-20 mx-auto w-full max-w-6xl px-4">
-            <div className="cases-heading flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <SectionBadge>Ödüllü Vakalar</SectionBadge>
-                <h2 className="mt-5 font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl lg:text-6xl">
-                  İşe yarayan işler.
-                </h2>
-                <div className="mt-6 hidden h-1 w-44 overflow-hidden rounded-full bg-slate-200 lg:block">
-                  <div
-                    ref={progressRef}
-                    className="h-full w-full origin-left scale-x-0 bg-gradient-to-r from-brand-500 to-amber-500"
-                  />
-                </div>
-              </div>
-              <p className="max-w-sm text-sm leading-relaxed text-body">
-                Kaydırmaya devam edin — ödüllü kampanyalarımız yatay olarak akıyor.
-              </p>
+      <div className="mx-auto w-full max-w-7xl px-4">
+        <div className="cases-heading flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <SectionBadge>Öne Çıkan İşler</SectionBadge>
+            <h2 className="mt-5 font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl lg:text-6xl">
+              {CASES_TITLE}
+            </h2>
+            {/* Progress indicator */}
+            <div className="mt-6 h-1 w-44 overflow-hidden rounded-full bg-slate-200">
+              <div
+                ref={progressRef}
+                className="h-full w-full origin-left scale-x-0 bg-gradient-to-r from-brand-500 to-amber-500 transition-transform duration-150"
+              />
             </div>
           </div>
-
-          {/* Track row — native snap-scroll below lg, GSAP-driven on lg+ */}
-          <div
-            className={
-              "relative z-10 " +
-              (sticky
-                ? "snap-x snap-mandatory overflow-x-auto pb-4 lg:snap-none lg:overflow-hidden lg:pb-0"
-                : "snap-x snap-mandatory overflow-x-auto pb-4")
-            }
-          >
-            <div
-              ref={trackRef}
-              className="flex w-max items-stretch gap-6 px-4 will-change-transform sm:gap-8 sm:px-[max(1rem,calc((100vw-72rem)/2))]"
+          {/* Arrow controls */}
+          <div className="flex gap-3">
+            <button
+              type="button"
+              onClick={() => scrollByCard(-1)}
+              disabled={atStart}
+              aria-label="Önceki vaka"
+              className={arrowCls(atStart)}
             >
-              {CASE_STUDIES.map((study) => (
-                <CaseStudyCard key={study.id} study={study} />
-              ))}
-
-              {/* End cap card */}
-              <div className="case-card relative z-10 flex h-auto min-h-[22rem] w-[70vw] max-w-xl lg:h-[62vh] lg:min-h-[30rem] shrink-0 snap-center flex-col items-center justify-center rounded-[2rem] border border-dashed border-brand-300 bg-white/60 p-10 text-center backdrop-blur-xl">
-                <Sparkles className="h-10 w-10 text-brand-500" aria-hidden="true" />
-                <h3 className="mt-6 font-display text-2xl font-bold text-ink sm:text-3xl">
-                  Sıradaki başarı hikayesi sizinki olsun.
-                </h3>
-                <a
-                  href="#iletisim"
-                  className="mt-8 inline-flex items-center gap-2 rounded-full bg-brand-500 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-400"
-                >
-                  Projenizi Konuşalım
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                </a>
-              </div>
-            </div>
+              <ArrowLeft className="h-5 w-5" aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollByCard(1)}
+              disabled={atEnd}
+              aria-label="Sonraki vaka"
+              className={arrowCls(atEnd)}
+            >
+              <ArrowRight className="h-5 w-5" aria-hidden="true" />
+            </button>
           </div>
         </div>
+      </div>
+
+      {/* Horizontal carousel — native scroll + snap + mouse drag */}
+      <div
+        ref={viewportRef}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerLeave={endDrag}
+        onClickCapture={onClickCapture}
+        className="cases-viewport no-scrollbar mt-8 flex cursor-grab snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-4 active:cursor-grabbing sm:px-[max(1rem,calc((100vw-80rem)/2))]"
+      >
+        {CASE_STUDIES.map((study) => (
+          <CaseStudyCard key={study.id} study={study} />
+        ))}
+      </div>
+
+      {/* Compact CTA (replaces the old oversized contact card) */}
+      <div className="mt-8 flex justify-center px-4">
+        <a
+          href="#iletisim"
+          className="inline-flex items-center gap-2 rounded-full bg-brand-500 px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-brand-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-400"
+        >
+          Sıradaki başarı hikayesi sizinki olsun
+          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        </a>
       </div>
     </section>
   );

@@ -1,10 +1,10 @@
 import React, { useLayoutEffect, useRef, useState } from "react";
-import { Mail, MapPin, Phone, Globe, Send, CheckCircle2, Check } from "lucide-react";
+import { Mail, MapPin, Phone, Globe, Send, CheckCircle2 } from "lucide-react";
 import { gsap, prefersReducedMotion } from "../lib/motion";
 import { GlassCard, SectionBadge } from "./ui.jsx";
-import { COMPANY, SERVICE_OPTIONS, SECTION_BG } from "../data/content.jsx";
+import { COMPANY, SECTION_BG } from "../data/content.jsx";
 
-const INITIAL_FORM = { name: "", email: "", company: "", services: [], message: "" };
+const INITIAL_FORM = { name: "", email: "", company: "", message: "" };
 
 /** İletişim — lead form with multi-select service tabs + company info. */
 const Contact = () => {
@@ -35,13 +35,6 @@ const Contact = () => {
     const { name, value } = e.target;
     setForm((p) => ({ ...p, [name]: value }));
   };
-  const toggleService = (svc) =>
-    setForm((p) => ({
-      ...p,
-      services: p.services.includes(svc)
-        ? p.services.filter((s) => s !== svc)
-        : [...p.services, svc],
-    }));
   const handleSubmit = (e) => {
     e.preventDefault();
     /* Wire to CRM / API endpoint in production. */
@@ -66,7 +59,7 @@ const Contact = () => {
       id="iletisim"
       ref={sectionRef}
       data-bg={SECTION_BG.contact}
-      className="relative overflow-hidden px-4 py-28"
+      className="relative overflow-hidden px-4 py-20"
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="absolute -left-24 top-1/4 h-72 w-72 rounded-full bg-brand-200/40 blur-3xl" />
@@ -167,33 +160,6 @@ const Contact = () => {
                   <input id="c-company" name="company" type="text" autoComplete="organization" value={form.company} onChange={handleChange} placeholder="Markanız veya şirketiniz" className={input} />
                 </div>
 
-                <fieldset className="sm:col-span-2">
-                  <legend className="mb-2 block text-sm font-semibold text-slate-700">
-                    Hizmet Türü <span className="font-normal text-slate-400">(birden fazla seçebilirsiniz)</span>
-                  </legend>
-                  <div className="flex flex-wrap gap-2">
-                    {SERVICE_OPTIONS.map((svc) => {
-                      const on = form.services.includes(svc);
-                      return (
-                        <button
-                          key={svc}
-                          type="button"
-                          aria-pressed={on}
-                          onClick={() => toggleService(svc)}
-                          className={
-                            "inline-flex items-center gap-1.5 rounded-full border px-4 py-2 text-sm font-medium transition-all duration-300 " +
-                            (on
-                              ? "border-brand-500 bg-brand-500 text-white shadow-md shadow-brand-500/30"
-                              : "border-slate-200 bg-white text-slate-600 hover:border-brand-300 hover:text-brand-600")
-                          }
-                        >
-                          {on && <Check className="h-3.5 w-3.5" aria-hidden="true" />}
-                          {svc}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </fieldset>
 
                 <div className="sm:col-span-2">
                   <label htmlFor="c-message" className="mb-2 block text-sm font-semibold text-slate-700">

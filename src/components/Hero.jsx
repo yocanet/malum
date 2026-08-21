@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useRef } from "react";
 import { Sparkles, ArrowRight, ArrowUpRight, ArrowDown } from "lucide-react";
 import { gsap, prefersReducedMotion } from "../lib/motion";
 import { SectionBadge } from "./ui.jsx";
-import { SECTION_BG, LOGO } from "../data/content.jsx";
+import { SECTION_BG, LOGO, COMPANY } from "../data/content.jsx";
 import { SmartImage } from "./ui.jsx";
 
 /**
@@ -139,7 +139,7 @@ const Hero = () => {
 
       <div className="hero-content relative z-10 mx-auto flex max-w-5xl flex-col items-center text-center">
         <div className="hero-soft">
-          <SectionBadge>Medya Stratejisi &amp; Performans Ajansı</SectionBadge>
+          <SectionBadge>{COMPANY.tagline}</SectionBadge>
         </div>
 
         <h1 className="mt-8 font-display text-[2.85rem] font-bold leading-[1.02] tracking-[-0.03em] text-ink sm:text-7xl lg:text-8xl">

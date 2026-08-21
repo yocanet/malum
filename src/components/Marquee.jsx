@@ -1,9 +1,9 @@
 import React, { useLayoutEffect, useRef } from "react";
-import { Sparkles } from "lucide-react";
 import { gsap, ScrollTrigger, prefersReducedMotion } from "../lib/motion";
-import { MARQUEE_ITEMS } from "../data/content.jsx";
+import { SmartImage } from "./ui.jsx";
+import { BRANDS } from "../data/content.jsx";
 
-/** Infinite kinetic type strip; reverses direction with scroll. */
+/** Brand-logo marquee under the hero; reverses with scroll direction. */
 const Marquee = () => {
   const wrapRef = useRef(null);
 
@@ -14,10 +14,9 @@ const Marquee = () => {
       const tween = gsap.to(".marquee-track", {
         xPercent: -50,
         ease: "none",
-        duration: 24,
+        duration: 30,
         repeat: -1,
       });
-
       ScrollTrigger.create({
         start: 0,
         end: "max",
@@ -34,25 +33,34 @@ const Marquee = () => {
     return () => ctx.revert();
   }, []);
 
-  const items = [...MARQUEE_ITEMS, ...MARQUEE_ITEMS];
+  const items = [...BRANDS, ...BRANDS];
 
   return (
     <div
       ref={wrapRef}
-      className="relative overflow-hidden border-y border-slate-200/70 bg-white/50 py-5 backdrop-blur-sm"
-      aria-hidden="true"
+      className="relative overflow-hidden border-y border-slate-200/70 bg-white/60 py-5 backdrop-blur-sm"
     >
+      <p className="sr-only">Birlikte çalıştığımız markalar</p>
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-[#F8FAFC] to-transparent sm:w-36" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-[#F8FAFC] to-transparent sm:w-36" />
       <div className="marquee-track flex w-max items-center will-change-transform">
         {[0, 1].map((half) => (
           <div key={half} className="flex shrink-0 items-center">
-            {items.map((item, i) => (
+            {items.slice(half * BRANDS.length, half * BRANDS.length + BRANDS.length).map((b, i) => (
               <span
-                key={`${half}-${i}`}
-                className="flex items-center gap-6 pr-6 font-display text-2xl font-bold tracking-tight text-ink/80 sm:text-3xl"
+                key={half + b.name + i}
+                className="mx-7 flex h-12 shrink-0 items-center sm:mx-10"
+                title={b.name}
               >
-                {item}
-                <Sparkles
-                  className={"h-5 w-5 " + (i % 2 === 0 ? "text-brand-400" : "text-steel-400")}
+                <SmartImage
+                  src={b.logo}
+                  alt={b.name}
+                  className="h-9 w-auto max-w-[10rem] object-contain opacity-70 grayscale transition-all duration-300 hover:opacity-100 hover:grayscale-0 sm:h-10"
+                  fallback={
+                    <span className="whitespace-nowrap font-display text-lg font-bold tracking-tight text-slate-400">
+                      {b.name}
+                    </span>
+                  }
                 />
               </span>
             ))}

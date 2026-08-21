@@ -1,9 +1,12 @@
 import React, { useLayoutEffect, useRef } from "react";
 import { gsap, prefersReducedMotion } from "../lib/motion";
-import { GlassCard, SectionBadge, SmartImage } from "./ui.jsx";
+import { SectionBadge, SmartImage } from "./ui.jsx";
 import { WHY, SECTION_BG, LOGO } from "../data/content.jsx";
 
-/** Sparkle Kısaca — value proposition + 4 core value badges. */
+/**
+ * Hakkımızda — value proposition. The four core values orbit the brand
+ * mark (rev. slide 9); the copy column is centred.
+ */
 const WhyUs = () => {
   const sectionRef = useRef(null);
 
@@ -23,21 +26,20 @@ const WhyUs = () => {
         }
       );
       gsap.fromTo(
-        ".why-value",
-        { y: 28, opacity: 0, scale: 0.97 },
+        ".why-chip",
+        { y: 18, opacity: 0, scale: 0.95 },
         {
           y: 0,
           opacity: 1,
           scale: 1,
-          duration: 0.7,
-          stagger: 0.1,
+          duration: 0.6,
+          stagger: 0.12,
           ease: "power3.out",
-          scrollTrigger: { trigger: ".why-values", start: "top 85%" },
+          scrollTrigger: { trigger: ".why-visual", start: "top 80%" },
         }
       );
-      /* Big brand mark drifts slowly with scroll */
       gsap.to(".why-mark", {
-        y: -60,
+        y: -50,
         rotate: 8,
         ease: "none",
         scrollTrigger: {
@@ -53,82 +55,74 @@ const WhyUs = () => {
 
   return (
     <section
-      id="neden-sparkle"
+      id="hakkimizda"
       ref={sectionRef}
       data-bg={SECTION_BG.why}
-      className="relative overflow-hidden px-4 py-28"
+      className="relative overflow-hidden px-4 py-20"
     >
       <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-12">
-        {/* Copy */}
-        <div className="lg:col-span-7">
+        {/* Copy — centred (rev. slide 9) */}
+        <div className="flex flex-col items-center text-center lg:col-span-6">
           <div className="why-reveal">
-            <SectionBadge>Sparkle Kısaca</SectionBadge>
+            <SectionBadge>Hakkımızda</SectionBadge>
           </div>
-          <h2 className="why-reveal mt-6 font-display text-4xl font-bold leading-[1.08] tracking-tight text-ink sm:text-5xl lg:text-6xl">
+          <h2 className="why-reveal mt-6 font-display text-4xl font-bold leading-[1.08] tracking-tight text-ink sm:text-5xl">
             {WHY.title}
           </h2>
-          <p className="why-reveal mt-6 max-w-2xl text-lg leading-relaxed text-body sm:text-xl">
+          <p className="why-reveal mt-6 max-w-xl text-lg leading-relaxed text-body">
             {WHY.description}
           </p>
+        </div>
 
-          <div className="why-values mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {/* Visual — brand mark with the four values at its corners */}
+        <div className="why-visual relative lg:col-span-6">
+          <div className="relative mx-auto aspect-square w-full max-w-lg">
+            <div className="absolute inset-6 rounded-[2.5rem] bg-gradient-to-br from-brand-50 via-white to-steel-50 shadow-2xl shadow-slate-200/60 sm:inset-10" />
+            <div aria-hidden="true" className="absolute -right-6 -top-6 h-52 w-52 rounded-full bg-brand-300/30 blur-3xl" />
+            <div aria-hidden="true" className="absolute -bottom-8 -left-6 h-52 w-52 rounded-full bg-steel-300/30 blur-3xl" />
+            <div className="absolute inset-0 flex items-center justify-center p-20 sm:p-24">
+              <SmartImage
+                src={LOGO.mark}
+                alt="Sparkle Medya işareti"
+                className="why-mark w-full max-w-[15rem] drop-shadow-xl"
+                fallback={<span className="font-display text-7xl font-bold text-brand-500">Sp</span>}
+              />
+            </div>
+
+            {/* Four value chips at the corners */}
             {WHY.values.map((v, i) => {
               const Icon = v.icon;
               const brand = i % 2 === 0;
+              const pos = [
+                "left-0 top-2 sm:-left-4 sm:top-6",
+                "right-0 top-2 sm:-right-4 sm:top-6",
+                "left-0 bottom-2 sm:-left-4 sm:bottom-6",
+                "right-0 bottom-2 sm:-right-4 sm:bottom-6",
+              ][i];
               return (
-                <GlassCard key={v.label} className="why-value flex items-center gap-4 rounded-2xl p-4">
+                <div
+                  key={v.label}
+                  className={
+                    "why-chip absolute z-10 flex items-center gap-2.5 rounded-2xl border border-slate-200/80 bg-white/90 px-3.5 py-2.5 shadow-lg backdrop-blur-xl " +
+                    pos
+                  }
+                >
                   <span
                     className={
-                      "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border " +
+                      "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border " +
                       (brand
                         ? "border-brand-200 bg-brand-50 text-brand-600"
                         : "border-steel-200 bg-steel-50 text-steel-600")
                     }
                   >
-                    <Icon className="h-5 w-5" aria-hidden="true" />
+                    <Icon className="h-4 w-4" aria-hidden="true" />
                   </span>
-                  <span className="font-display text-base font-bold text-ink">{v.label}</span>
-                </GlassCard>
+                  <span className="whitespace-nowrap font-display text-xs font-bold text-ink sm:text-sm">
+                    {v.label}
+                  </span>
+                </div>
               );
             })}
-          </div>
-        </div>
-
-        {/* Visual — brand mark composition */}
-        <div className="relative lg:col-span-5">
-          <div className="relative mx-auto aspect-square w-full max-w-md">
-            <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-brand-50 via-white to-steel-50 shadow-2xl shadow-slate-200/60" />
-            <div
-              aria-hidden="true"
-              className="absolute -right-10 -top-10 h-56 w-56 rounded-full bg-brand-300/30 blur-3xl"
-            />
-            <div
-              aria-hidden="true"
-              className="absolute -bottom-12 -left-8 h-56 w-56 rounded-full bg-steel-300/30 blur-3xl"
-            />
-            <div className="absolute inset-0 flex items-center justify-center p-12">
-              <SmartImage
-                src={LOGO.mark}
-                alt="Sparkle Medya işareti"
-                className="why-mark w-3/4 drop-shadow-xl"
-                fallback={
-                  <span className="font-display text-7xl font-bold text-brand-500">Sp</span>
-                }
-              />
-            </div>
-            {/* Floating stat chips */}
-            <div className="absolute -left-4 top-10 rounded-2xl border border-slate-200/80 bg-white/90 px-4 py-3 shadow-lg backdrop-blur-xl sm:-left-8">
-              <p className="font-display text-2xl font-bold text-ink">
-                360<span className="text-brand-500">°</span>
-              </p>
-              <p className="text-xs font-medium text-slate-500">Bütünsel yaklaşım</p>
-            </div>
-            <div className="absolute -right-4 bottom-12 rounded-2xl border border-slate-200/80 bg-white/90 px-4 py-3 shadow-lg backdrop-blur-xl sm:-right-8">
-              <p className="font-display text-2xl font-bold text-ink">
-                98<span className="text-brand-500">+</span>
-              </p>
-              <p className="text-xs font-medium text-slate-500">Yıl yönetici tecrübesi</p>
-            </div>
           </div>
         </div>
       </div>

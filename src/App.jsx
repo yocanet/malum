@@ -10,7 +10,6 @@ import WhyUs from "./components/WhyUs.jsx";
 import SparkleWay from "./components/SparkleWay.jsx";
 import Capabilities from "./components/Capabilities.jsx";
 import TechMarquee from "./components/TechMarquee.jsx";
-import StatsBand from "./components/StatsBand.jsx";
 import CaseStudies from "./components/CaseStudies.jsx";
 import Team from "./components/Team.jsx";
 import Contact from "./components/Contact.jsx";
@@ -94,10 +93,9 @@ const App = () => {
         <Hero />
         <Marquee />
         <WhyUs />
-        <SparkleWay />
         <Capabilities />
+        <SparkleWay />
         <TechMarquee />
-        <StatsBand />
         <CaseStudies />
         <Team />
         <Contact />

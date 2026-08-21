@@ -52,15 +52,15 @@ const Header = () => {
         }
       >
         <a href="#home" className="flex items-center" aria-label="Sparkle Medya — Anasayfa">
-          <Logo variant="primary" className="h-9 w-auto sm:h-10" />
+          <Logo variant="primary" className="h-11 w-auto sm:h-12" />
         </a>
 
-        <ul className="hidden items-center gap-0.5 xl:flex">
+        <ul className="hidden items-center gap-0 2xl:flex">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
               <a
                 href={link.href}
-                className="rounded-full px-3.5 py-2 text-sm font-medium text-slate-600 transition-colors duration-300 hover:bg-brand-50 hover:text-brand-600"
+                className="whitespace-nowrap rounded-full px-2.5 py-2 text-[13px] font-medium text-slate-600 transition-colors duration-300 hover:bg-brand-50 hover:text-brand-600"
               >
                 {link.label}
               </a>
@@ -70,7 +70,7 @@ const Header = () => {
 
         <a
           href="#iletisim"
-          className="hidden items-center gap-2 whitespace-nowrap rounded-full bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-brand-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-400 hover:shadow-xl hover:shadow-brand-500/40 xl:inline-flex"
+          className="hidden items-center gap-2 whitespace-nowrap rounded-full bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-brand-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-400 hover:shadow-xl hover:shadow-brand-500/40 2xl:inline-flex"
         >
           Bir Sonraki Adımı Belirleyelim
           <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
@@ -81,13 +81,13 @@ const Header = () => {
           onClick={() => setMenuOpen((o) => !o)}
           aria-expanded={menuOpen}
           aria-label={menuOpen ? "Menüyü kapat" : "Menüyü aç"}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 transition-colors hover:bg-slate-50 xl:hidden"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 transition-colors hover:bg-slate-50 2xl:hidden"
         >
           {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
 
         {menuOpen && (
-          <div className="absolute inset-x-0 top-full mt-2 px-1 xl:hidden">
+          <div className="absolute inset-x-0 top-full mt-2 px-1 2xl:hidden">
             <div className="rounded-2xl border border-slate-200/90 bg-white/95 p-3 shadow-xl backdrop-blur-xl">
               <ul className="flex flex-col">
                 {NAV_LINKS.map((link) => (

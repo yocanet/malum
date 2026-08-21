@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useRef } from "react";
 import { gsap, prefersReducedMotion } from "../lib/motion";
 import { GlassCard, SectionBadge } from "./ui.jsx";
-import { SPARKLE_WAY, SECTION_BG } from "../data/content.jsx";
+import { SPARKLE_WAY, WAY_SUBTITLE, SECTION_BG } from "../data/content.jsx";
 
 /** The Sparkle Way — 4-step model; connector draws with scroll. */
 const SparkleWay = () => {
@@ -53,19 +53,17 @@ const SparkleWay = () => {
   }, []);
 
   return (
-    <section id="surec" ref={sectionRef} data-bg={SECTION_BG.way} className="relative px-4 py-28">
+    <section id="calisma-sureci" ref={sectionRef} data-bg={SECTION_BG.way} className="relative px-4 py-20">
       <div className="mx-auto max-w-7xl">
         <div className="way-heading mx-auto max-w-2xl text-center">
-          <SectionBadge tone="steel">The Sparkle Way</SectionBadge>
+          <SectionBadge tone="steel">Çalışma Süreci</SectionBadge>
           <h2 className="mt-6 font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl lg:text-6xl">
             Dört adımlı çalışma modeli.
           </h2>
-          <p className="mt-5 text-lg leading-relaxed text-body">
-            Her kampanya aynı disiplinden geçer; hiçbir adım şansa bırakılmaz.
-          </p>
+          <p className="mt-5 text-lg leading-relaxed text-body">{WAY_SUBTITLE}</p>
         </div>
 
-        <div className="relative mt-16">
+        <div className="relative mt-12">
           <div
             className="absolute left-0 right-0 top-12 hidden h-0.5 bg-slate-200/70 lg:block"
             aria-hidden="true"

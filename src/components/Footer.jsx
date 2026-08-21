@@ -1,5 +1,5 @@
 import React from "react";
-import { Mail, MapPin, Phone, Globe } from "lucide-react";
+import { Mail, MapPin, Phone, Globe, Instagram } from "lucide-react";
 import { Logo, LinkedInIcon } from "./ui.jsx";
 import YocaSignature from "./branding/YocaSignature.jsx";
 import { NAV_LINKS, CAPABILITY_PILLARS, COMPANY } from "../data/content.jsx";
@@ -23,11 +23,22 @@ const Footer = () => (
           </p>
           <div className="mt-6 flex gap-3">
             <a
-              href="#iletisim"
+              href={COMPANY.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="LinkedIn"
               className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-slate-300 transition-all duration-300 hover:border-brand-400 hover:bg-brand-500/20 hover:text-white"
             >
               <LinkedInIcon className="h-5 w-5" />
+            </a>
+            <a
+              href={COMPANY.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-slate-300 transition-all duration-300 hover:border-brand-400 hover:bg-brand-500/20 hover:text-white"
+            >
+              <Instagram className="h-5 w-5" aria-hidden="true" />
             </a>
             <a
               href={`mailto:${COMPANY.email}`}

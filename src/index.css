@@ -39,3 +39,12 @@ html.lenis body {
     align-items: flex-start;
   }
 }
+
+/* Hide scrollbars on carousels while keeping them scrollable */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

@@ -5,6 +5,8 @@
  * Image convention: every visual asset resolves from /public/images/…
  * If a file is missing, components fall back to SVG/monogram/wordmark
  * automatically — drop the real files in and nothing else changes.
+ *
+ * Revised per "revizeler 21.08.26.pptx".
  */
 import {
   Tv,
@@ -28,27 +30,30 @@ import {
   MonitorPlay,
   RefreshCw,
   ShieldCheck,
-  Trophy,
 } from "lucide-react";
 
+/* Nav order mirrors the page flow (rev. slide 6 + 8). */
 export const NAV_LINKS = [
-  { label: "Neden Sparkle", href: "#neden-sparkle" },
-  { label: "Yetkinlikler", href: "#yetkinlikler" },
-  { label: "Süreç", href: "#surec" },
-  { label: "Teknolojiler", href: "#teknolojiler" },
-  { label: "Vakalar", href: "#vakalar" },
-  { label: "Ekip", href: "#ekip" },
+  { label: "Hakkımızda", href: "#hakkimizda" },
+  { label: "Hizmet Yapısı", href: "#hizmet-yapisi" },
+  { label: "Çalışma Süreci", href: "#calisma-sureci" },
+  { label: "Sektörel Temsiliyet & Teknolojik Altyapı", href: "#temsiliyet-teknoloji" },
+  { label: "Öne Çıkan İşler", href: "#one-cikan-isler" },
+  { label: "Yönetim Kadrosu", href: "#yonetim-kadrosu" },
   { label: "İletişim", href: "#iletisim" },
 ];
 
 export const COMPANY = {
   name: "Sparkle Medya",
+  tagline: "Medya Planlama ve Satın Alma Ajansı",
   address: "Maslak Mah. Meydan Sok. Spring Giz Plaza No: 5 Kat: 17 Sarıyer / İSTANBUL",
   phone: "+90 212 232 22 00",
   phoneHref: "tel:+902122322200",
   web: "www.spmedya.com",
   webHref: "https://www.spmedya.com",
   email: "info@spmedya.com",
+  linkedin: "https://www.linkedin.com/company/sparklemedya/posts/?feedView=all",
+  instagram: "https://www.instagram.com/sparkle_medya/",
 };
 
 /* Logo asset paths (public/images/logo/…). */
@@ -66,15 +71,27 @@ export const LOGO = {
 export const SECTION_BG = {
   hero: "#F8FAFC",
   why: "#FFFFFF",
-  way: "#FEF3EE",
   capabilities: "#F8FAFC",
+  way: "#FEF3EE",
   tech: "#FFFFFF",
   cases: "#F3F6F8",
   team: "#F8FAFC",
   contact: "#FEF3EE",
 };
 
-/* ── 3. Sparkle Kısaca ─────────────────────────────────────────────── */
+/* Brand logo marquee under the hero (rev. slide 8). */
+export const BRANDS = [
+  { name: "Binance", logo: "/images/brands/binance.png" },
+  { name: "Boyner", logo: "/images/brands/boyner.png" },
+  { name: "Kurukahveci Mehmet Efendi", logo: "/images/brands/kurukahveci-mehmet-efendi.png" },
+  { name: "Betek Boya", logo: "/images/brands/betek-boya.png" },
+  { name: "Hepiyi Sigorta", logo: "/images/brands/hepiyi-sigorta.png" },
+  { name: "Hopi", logo: "/images/brands/hopi.png" },
+  { name: "Şen Piliç", logo: "/images/brands/sen-pilic.png" },
+  { name: "Tat", logo: "/images/brands/tat.png" },
+];
+
+/* ── Hakkımızda ────────────────────────────────────────────────────── */
 export const WHY = {
   title: "Medyanın tüm parçalarını tek strateji altında birleştiriyoruz.",
   description:
@@ -87,7 +104,10 @@ export const WHY = {
   ],
 };
 
-/* ── 4. The Sparkle Way ────────────────────────────────────────────── */
+/* ── Çalışma Süreci ────────────────────────────────────────────────── */
+export const WAY_SUBTITLE =
+  "Her adımı markalarımızla birlikte düşünüyor; doğru stratejiyi, doğru zamanda doğru kararlarla hayata geçiriyoruz.";
+
 export const SPARKLE_WAY = [
   {
     step: "01",
@@ -123,82 +143,131 @@ export const SPARKLE_WAY = [
   },
 ];
 
-/* ── 5. Capabilities / 360° ────────────────────────────────────────── */
+/* ── Hizmet Yapısı (360°) ──────────────────────────────────────────── */
+export const CAPABILITIES_SUBTITLE =
+  "Geleneksel medyadan performansa, veriden özel projelere — medyanın tüm gücünü bütünsel bir yaklaşımla bir araya getiriyoruz.";
+
 export const CAPABILITY_PILLARS = [
   {
     id: "integrated",
-    title: "Integrated Media",
+    title: "Online - Offline Medya Planlama ve Satın Alma",
     lead: "Geleneksel ve dijitali tek planda buluşturan bütünleşik medya yönetimi.",
-    items: ["TV", "Açıkhava (OOH)", "Radyo", "Medya Planlama & Satın Alma"],
+    items: ["TV", "Açıkhava (OOH)", "Dijital", "Radyo", "Basın", "Sinema"],
     icon: Tv,
     accent: "brand",
-    span: "lg:col-span-7",
+    span: "lg:col-span-12",
     featured: true,
   },
   {
     id: "performance",
-    title: "Performance & Digital Activation",
-    lead: "Ölçülebilir dönüşüm için dijital aktivasyon.",
+    title: "Dijital Medya & Performans Pazarlaması",
+    lead: "Dijital medyayı stratejiden satın almaya, ölçümlemeden optimizasyona uçtan uca yönetiyoruz.",
     items: [
-      "SEM & SEO/GEO",
+      "Dijital Medya Planlama ve Satın Alma",
       "Sosyal Medya Reklam Yönetimi",
-      "Programatik (DSP) & Jeolokalizasyon",
+      "Programatik (DSP)",
+      "Ölçümleme & Optimizasyon",
+      "SEO & GEO",
     ],
     icon: Target,
     accent: "steel",
-    span: "lg:col-span-5",
+    span: "lg:col-span-4",
   },
   {
     id: "data",
-    title: "Data, Analytics & Intelligence",
-    lead: "Kararı sezgiden veriye taşıyan analitik katman.",
-    items: ["Analytics Yönetimi", "Data Segmentasyonu", "Hedef Kitle & Rekabet Analizi"],
+    title: "Veri, Analitik & İçgörü",
+    lead: "Veriyi anlamlandırıyor, içgörüyü stratejik kararlara dönüştürüyoruz.",
+    items: [
+      "Analytics & Ölçümleme",
+      "Veri Analizi & Segmentasyon",
+      "Hedef Kitle & Tüketici İçgörüleri",
+      "Rekabet & Pazar Analizi",
+      "Raporlama & Veri Görselleştirme",
+    ],
     icon: Database,
     accent: "steel",
-    span: "lg:col-span-5",
+    span: "lg:col-span-4",
   },
   {
     id: "special",
-    title: "Special Projects & Partnerships",
-    lead: "Markayı içerik ve iş birliğiyle büyüten özel projeler.",
+    title: "Özel Projeler & İş Birlikleri",
+    lead: "Markalar için medyanın ötesine geçen içerik, iş birliği ve proje alanları yaratıyoruz.",
     items: [
-      "Influencer Marketing",
-      "Marka Bazlı İçerik Üretimi",
-      "Sponsorluk & Proje Geliştirme",
+      "Influencer & Creator Marketing",
+      "Marka İş Birlikleri & İçerik Projeleri",
+      "Sponsorluk & Entegrasyon",
+      "Topluluk Yönetimi",
     ],
     icon: Handshake,
-    accent: "brand",
-    span: "lg:col-span-7",
+    accent: "steel",
+    span: "lg:col-span-4",
   },
 ];
 
-/* ── 6. Akreditasyonlar & Teknoloji (marquee) ──────────────────────── */
-/* `logo` resolves under /images/{accreditations|tech}/… ; missing files
-   fall back to a typographic wordmark chip. */
+/* ── Sektörel Temsiliyet & Teknoloji Altyapımız ────────────────────── */
+export const TECH_SECTION = {
+  title: "Sektörel Temsiliyet & Teknoloji Altyapımız",
+  subtitle:
+    "Sektörel temsiliyetimizi güçlü veri, teknoloji ve ölçümleme altyapısıyla destekliyoruz.",
+  accreditationsLabel: "Sektörel Temsiliyetlerimiz",
+  techLabel: "Kullandığımız Teknolojiler & Veri Araçları",
+};
+
 export const ACCREDITATIONS = [
   { name: "Kantar Media", logo: "/images/accreditations/kantar.png" },
   { name: "TİAK", logo: "/images/accreditations/tiak.png" },
   { name: "RİAK", logo: "/images/accreditations/riak.png" },
   { name: "Reklamcılar Derneği", logo: "/images/accreditations/reklamcilar-dernegi.png" },
   { name: "IAB Türkiye", logo: "/images/accreditations/iab.png" },
-  { name: "MRC", logo: "/images/accreditations/mrc.png" },
+  { name: "ARVAK", logo: "/images/accreditations/arvak.png" },
 ];
 
-export const TECH_STACK = [
-  { name: "Google DV360", logo: "/images/tech/dv360.png" },
-  { name: "Adform", logo: "/images/tech/adform.png" },
-  { name: "Teads", logo: "/images/tech/teads.png" },
-  { name: "DoubleVerify", logo: "/images/tech/doubleverify.png" },
-  { name: "MOAT", logo: "/images/tech/moat.png" },
-  { name: "Adjust", logo: "/images/tech/adjust.png" },
-  { name: "Grapeshot", logo: "/images/tech/grapeshot.png" },
-  { name: "GlobalWebIndex", logo: "/images/tech/gwi.png" },
-  { name: "Wizzard Plus", logo: "/images/tech/wizzard-plus.png" },
-  { name: "Medplan", logo: "/images/tech/medplan.png" },
-  { name: "INSTAR Analytics", logo: "/images/tech/instar.png" },
+/* Tools grouped per rev. slide 14. */
+export const TECH_CATEGORIES = [
+  {
+    title: "Hedef Kitle & İçgörü",
+    tools: [
+      { name: "TGI", logo: "/images/tech/tgi.png" },
+      { name: "GlobalWebIndex", logo: "/images/tech/gwi.png" },
+    ],
+  },
+  {
+    title: "Planlama & Ölçümleme",
+    tools: [
+      { name: "Kantar Adex", logo: "/images/tech/kantar-adex.png" },
+      { name: "Instar", logo: "/images/tech/instar.png" },
+      { name: "Wizard Plus", logo: "/images/tech/wizzard-plus.png" },
+      { name: "Medplan", logo: "/images/tech/medplan.png" },
+    ],
+  },
+  {
+    title: "Programatik Satın Alma",
+    tools: [
+      { name: "Google DV360", logo: "/images/tech/dv360.png" },
+      { name: "Adform", logo: "/images/tech/adform.png" },
+    ],
+  },
+  {
+    title: "Reklam Doğrulama & Kalite",
+    tools: [
+      { name: "DoubleVerify", logo: "/images/tech/doubleverify.png" },
+      { name: "MOAT", logo: "/images/tech/moat.png" },
+      { name: "Grapeshot", logo: "/images/tech/grapeshot.png" },
+    ],
+  },
+  {
+    title: "Analitik & Reklam Yönetimi",
+    tools: [
+      { name: "Adjust", logo: "/images/tech/adjust.png" },
+      { name: "Gemius", logo: "/images/tech/gemius.png" },
+      { name: "DoubleClick", logo: "/images/tech/doubleclick.png" },
+    ],
+  },
 ];
 
-/* ── 7. Case Studies ───────────────────────────────────────────────── */
+/* ── Öne Çıkan İşler ───────────────────────────────────────────────── */
+export const CASES_TITLE = "Işıltılı İşlerimiz";
+
 export const CASE_STUDIES = [
   {
     id: "nesine-dco",
@@ -213,14 +282,16 @@ export const CASE_STUDIES = [
       { icon: Smartphone, value: "%99", label: "Mobil Dönüşüm" },
       { icon: Layers, value: "83.031", label: "Farklı Kreatif" },
     ],
-    awards: ["Felis 1.'lik", "Kristal Elma Gümüş", "13. MIXX Awards Gümüş", "Martech Awards (2 Kategori)"],
+    awards: [
+      { logo: "/images/awards/felis.png", name: "Felis", text: "Felis Birincilik Ödülü" },
+      { logo: "/images/awards/kristal-elma.png", name: "Kristal Elma", text: "Gümüş Ödül" },
+      { logo: "/images/awards/mixx.png", name: "MIXX Awards", text: "13. MIXX Awards Gümüş Ödül" },
+      { logo: "/images/awards/martech.png", name: "Martech Awards", text: "2 Kategoride Ödül" },
+    ],
     art: "dco",
-    /* Media: set ONE of videoEmbedUrl (YouTube/Vimeo embed URL) or videoSrc
-       (local .mp4 under public/videos/) + poster. If neither exists the card
-       falls back to `image`, then to the brand SVG art. */
-    videoEmbedUrl: "",
-    videoSrc: "/videos/nesine-dco.mp4",
-    poster: "/images/cases/nesine-dco.jpg",
+    videoEmbedUrl: "https://www.youtube.com/embed/umHER5k2M7U",
+    videoSrc: "",
+    poster: "https://i.ytimg.com/vi/umHER5k2M7U/hqdefault.jpg",
     image: "/images/cases/nesine-dco.jpg",
     gradient: "from-brand-500/15 via-amber-300/10 to-transparent",
     chip: "text-brand-600 bg-brand-50 border-brand-200",
@@ -232,17 +303,23 @@ export const CASE_STUDIES = [
     label: "Dijital Dizi Fragman Sponsorluğu",
     year: "2024",
     summary:
-      "İnci Taneleri, Kızılcık Şerbeti ve Yalı Çapkını fragmanlarına entegre sponsorluk kurgusuyla milyonlarca izleyiciye kesintisiz marka görünürlüğü.",
+      "Media-first bir yaklaşımla, dizi fragmanlarının yükselen dijital izlenme gücünü yeni bir reklam fırsatına dönüştürerek YouTube ve Online TV'de markaya özel bir sponsorluk modeli yarattık.",
     stats: [
       { icon: Clapperboard, value: "140M", label: "İzlenme" },
       { icon: Timer, value: "1.4M Sn", label: "Markalı Süre" },
       { icon: TrendingUp, value: "11X", label: "Maliyet Verimliliği" },
     ],
-    awards: ["MIXX Awards Europe Bronz"],
+    awards: [
+      {
+        logo: "/images/awards/mixx.png",
+        name: "MIXX Awards Europe",
+        text: "Video Reklam Kampanyası Bronz Ödül",
+      },
+    ],
     art: "film",
-    videoEmbedUrl: "",
-    videoSrc: "/videos/hepsiburada-dizi.mp4",
-    poster: "/images/cases/hepsiburada-dizi.jpg",
+    videoEmbedUrl: "https://www.youtube.com/embed/qviOvafrD1Y",
+    videoSrc: "",
+    poster: "https://i.ytimg.com/vi/qviOvafrD1Y/hqdefault.jpg",
     image: "/images/cases/hepsiburada-dizi.jpg",
     gradient: "from-amber-400/15 via-steel-300/10 to-transparent",
     chip: "text-brand-600 bg-brand-50 border-brand-200",
@@ -254,18 +331,20 @@ export const CASE_STUDIES = [
     label: "In-Game Audio Reklamları",
     year: "2024",
     summary:
-      "Oyun içi sesli reklam formatıyla, ekrana bakmayan kullanıcıya bile markayı duyurduk; gelir ve etkileşim katlandı.",
+      "In-Game Audio ile marka mesajını oyun deneyimini bölmeden genç kitlelerle buluşturduk, ses ve görsel teması birlikte kullanarak etkileşimi güçlendirdik.",
     stats: [
       { icon: TrendingUp, value: "14X", label: "Satış Geliri" },
       { icon: MousePointerClick, value: "11X", label: "CTR Artışı" },
       { icon: Headphones, value: "3M", label: "Dinlenme" },
       { icon: Users, value: "1M", label: "Tekil Erişim" },
     ],
-    awards: ["Kristal Elma"],
+    awards: [
+      { logo: "/images/awards/kristal-elma.png", name: "Kristal Elma", text: "Kristal Elma Ödülü" },
+    ],
     art: "audio",
-    videoEmbedUrl: "",
-    videoSrc: "/videos/hepsiburada-audio.mp4",
-    poster: "/images/cases/hepsiburada-audio.jpg",
+    videoEmbedUrl: "https://www.youtube.com/embed/pUIxyxlrDHE",
+    videoSrc: "",
+    poster: "https://i.ytimg.com/vi/pUIxyxlrDHE/hqdefault.jpg",
     image: "/images/cases/hepsiburada-audio.jpg",
     gradient: "from-steel-500/15 via-steel-300/10 to-transparent",
     chip: "text-steel-600 bg-steel-50 border-steel-200",
@@ -273,7 +352,12 @@ export const CASE_STUDIES = [
   },
 ];
 
-/* ── 8. Leadership ─────────────────────────────────────────────────── */
+/* ── Yönetim Kadrosu ───────────────────────────────────────────────── */
+export const TEAM_SUBTITLE =
+  "Köklü medya deneyimimizi, farklı uzmanlıklarımızla ortak bir vizyonda buluşturuyoruz.";
+
+/* NOTE: `bio` metinleri, ayrıca iletilecek uzun biyografilerle
+   güncellenecek (Aslı Bakan biyografisi ayrıca gelecek). */
 export const TEAM = [
   {
     name: "Burak Kaan Bülbüloğlu",
@@ -281,8 +365,8 @@ export const TEAM = [
     years: 27,
     initials: "BK",
     photo: "/images/team/burak-kaan-bulbuloglu.jpg",
-    accent: "brand",
-    bio: "Universal McCann, Lotus Media, Veritas Media kuruculuğu.",
+    linkedin: "https://www.linkedin.com/in/kaan-b%C3%BClb%C3%BClo%C4%9Flu-9bba4946/",
+    bio: "Universal McCann, Lotus Media ve Veritas Media kuruculuğu dahil olmak üzere 27 yılı aşkın medya planlama ve satın alma liderliği.",
   },
   {
     name: "Rima Erdemir",
@@ -290,8 +374,8 @@ export const TEAM = [
     years: 30,
     initials: "RE",
     photo: "/images/team/rima-erdemir.jpg",
-    accent: "steel",
-    bio: "Milliyet, Medyanet Genel Müdürü, Demirören Medya Reklam Grup Başkanı, IAB Türkiye & KAGİDER YK Üyesi.",
+    linkedin: "https://www.linkedin.com/in/rima-erdemir-67910240/",
+    bio: "Milliyet ve Medyanet Genel Müdürlüğü, Demirören Medya Reklam Grup Başkanlığı; IAB Türkiye ve KAGİDER Yönetim Kurulu Üyeliği ile 30 yılı aşkın medya yönetimi deneyimi.",
   },
   {
     name: "Öncü Gülmez",
@@ -299,8 +383,8 @@ export const TEAM = [
     years: 21,
     initials: "ÖG",
     photo: "/images/team/oncu-gulmez.jpg",
-    accent: "brand",
-    bio: "Mindshare, Starcom MediaVest, Arena Media Turkey Ajans Başkan Yardımcısı.",
+    linkedin: "https://www.linkedin.com/in/oncug/",
+    bio: "Mindshare, Starcom MediaVest ve Arena Media Turkey Ajans Başkan Yardımcılığı dahil 21 yılı aşkın medya stratejisi ve operasyon deneyimi.",
   },
   {
     name: "Aslı Bakan",
@@ -308,43 +392,7 @@ export const TEAM = [
     years: 20,
     initials: "AB",
     photo: "/images/team/asli-bakan.jpg",
-    accent: "steel",
-    bio: "20 yılı aşkın medya ve strateji deneyimi.",
+    linkedin: "https://www.linkedin.com/in/asl%C4%B1-bakan-g%C3%B6kulu-2619b188/",
+    bio: "20 yılı aşkın medya ve strateji deneyimi. (Detaylı biyografi eklenecek.)",
   },
-];
-
-/* Headline metrics band (NaN-safe: numeric values + static affixes). */
-export const STATS = [
-  { value: 313, prefix: "+", suffix: "M", label: "Gösterim" },
-  { value: 10, prefix: "", suffix: "X", label: "ROAS" },
-  { value: 140, prefix: "", suffix: "M", label: "Dizi İzlenmesi" },
-  { value: 14, prefix: "", suffix: "X", label: "Satış Geliri" },
-  { value: 11, prefix: "", suffix: "X", label: "CTR Artışı" },
-  { value: 98, prefix: "", suffix: "+", label: "Yıl Yönetici Tecrübesi" },
-];
-
-export const AWARDS = [
-  { name: "Felis", detail: "Nesine.com — DCO · 1.'lik", icon: Trophy },
-  { name: "Kristal Elma", detail: "Nesine.com Gümüş · Hepsiburada In-Game Audio", icon: Trophy },
-  { name: "MIXX Awards", detail: "13. MIXX Gümüş · MIXX Europe Bronz", icon: Trophy },
-  { name: "Martech Awards", detail: "Nesine.com — DCO · 2 Kategori", icon: Trophy },
-];
-
-/* Contact form — service multi-select tabs. */
-export const SERVICE_OPTIONS = [
-  "Integrated Media",
-  "Performance & Digital",
-  "Data & Analytics",
-  "Special Projects",
-  "Influencer",
-  "Sponsorluk",
-];
-
-export const MARQUEE_ITEMS = [
-  "STRATEJİ",
-  "PLANLAMA",
-  "SATIN ALMA",
-  "ÖLÇÜMLEME",
-  "PERFORMANS",
-  "VERİ",
 ];
