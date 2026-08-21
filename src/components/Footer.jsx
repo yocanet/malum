@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { Mail, MapPin, Phone, Globe, Instagram } from "lucide-react";
 import { Logo, LinkedInIcon } from "./ui.jsx";
 import YocaSignature from "./branding/YocaSignature.jsx";
+import LegalModal from "./LegalModal.jsx";
 import { NAV_LINKS, CAPABILITY_PILLARS, COMPANY } from "../data/content.jsx";
 
-/** Rich footer on dark ink — white logo variant. */
-const Footer = () => (
+const LEGAL_LINKS = [
+  { id: "gizlilik", label: "Gizlilik Politikası" },
+  { id: "kvkk", label: "KVKK Aydınlatma Metni" },
+  { id: "cerez", label: "Çerez Politikası" },
+];
+
+/** Rich footer on dark ink — white logo variant. Legal links open modals. */
+const Footer = () => {
+  const [legalDoc, setLegalDoc] = useState(null);
+
+  return (
   <footer className="relative overflow-hidden bg-ink px-4 pb-10 pt-16 text-slate-300">
     <div aria-hidden="true" className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brand-500/20 blur-3xl" />
     <div aria-hidden="true" className="pointer-events-none absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-steel-500/20 blur-3xl" />
@@ -104,14 +114,25 @@ const Footer = () => (
         <p className="text-xs text-slate-500">
           © {new Date().getFullYear()} Sparkle Medya. Tüm hakları saklıdır.
         </p>
-        <div className="flex gap-6 text-xs text-slate-500">
-          <a href="#home" className="transition-colors hover:text-slate-300">Gizlilik Politikası</a>
-          <a href="#home" className="transition-colors hover:text-slate-300">KVKK Aydınlatma Metni</a>
+        <div className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-slate-500">
+          {LEGAL_LINKS.map((l) => (
+            <button
+              key={l.id}
+              type="button"
+              onClick={() => setLegalDoc(l.id)}
+              className="transition-colors hover:text-slate-300"
+            >
+              {l.label}
+            </button>
+          ))}
         </div>
         <YocaSignature source={COMPANY.web} theme="dark" className="footer-signature" />
       </div>
     </div>
+
+    <LegalModal docId={legalDoc} onClose={() => setLegalDoc(null)} />
   </footer>
-);
+  );
+};
 
 export default Footer;

@@ -14,6 +14,7 @@ import CaseStudies from "./components/CaseStudies.jsx";
 import Team from "./components/Team.jsx";
 import Contact from "./components/Contact.jsx";
 import Footer from "./components/Footer.jsx";
+import CookieConsent from "./components/CookieConsent.jsx";
 
 /**
  * Root — wires Lenis smooth scrolling into GSAP's ticker and morphs the
@@ -101,6 +102,7 @@ const App = () => {
         <Contact />
       </main>
       <Footer />
+      <CookieConsent />
     </div>
   );
 };
