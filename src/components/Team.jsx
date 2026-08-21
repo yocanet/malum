@@ -102,8 +102,8 @@ const BioModal = ({ member, onClose }) => {
         onClick={onClose}
         aria-hidden="true"
       />
-      <div className="relative w-full max-w-xl overflow-hidden rounded-[2rem] border border-slate-200/80 bg-white shadow-2xl">
-        <div className="flex items-start gap-5 p-6 sm:p-8">
+      <div className="relative max-h-[85vh] w-full max-w-xl overflow-hidden rounded-[2rem] border border-slate-200/80 bg-white shadow-2xl">
+        <div data-lenis-prevent className="flex max-h-[85vh] items-start gap-5 overflow-y-auto overscroll-contain p-6 sm:p-8">
           <div className="hidden h-28 w-24 shrink-0 overflow-hidden rounded-2xl ring-1 ring-slate-200 sm:block">
             <SmartImage
               src={member.photo}

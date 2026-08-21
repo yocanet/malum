@@ -58,7 +58,7 @@ const LegalModal = ({ docId, onClose }) => {
         </div>
 
         {/* Scrollable body */}
-        <div className="overflow-y-auto px-6 py-6 sm:px-8">
+        <div data-lenis-prevent className="overflow-y-auto overscroll-contain px-6 py-6 sm:px-8">
           {doc.sections.map((section, i) => (
             <div key={i} className={i === 0 ? "" : "mt-5"}>
               {section.heading && (
