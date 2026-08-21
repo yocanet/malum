@@ -206,7 +206,7 @@ export const CAPABILITY_PILLARS = [
 
 /* ── Sektörel Temsiliyet & Teknoloji Altyapımız ────────────────────── */
 export const TECH_SECTION = {
-  title: "Sektörel Temsiliyet & Teknoloji Altyapımız",
+  titleLines: ["Sektörel Temsiliyet &", "Teknoloji Altyapımız"],
   subtitle:
     "Sektörel temsiliyetimizi güçlü veri, teknoloji ve ölçümleme altyapısıyla destekliyoruz.",
   accreditationsLabel: "Sektörel Temsiliyetlerimiz",

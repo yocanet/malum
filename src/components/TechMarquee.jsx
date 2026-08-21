@@ -88,7 +88,11 @@ const TechMarquee = () => {
         <div className="tech-heading mx-auto max-w-3xl text-center">
           <SectionBadge tone="steel">Sektörel Temsiliyet &amp; Teknoloji</SectionBadge>
           <h2 className="mt-6 font-display text-4xl font-bold tracking-tight text-ink sm:text-5xl">
-            {TECH_SECTION.title}
+            {TECH_SECTION.titleLines.map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
+            ))}
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-body">{TECH_SECTION.subtitle}</p>
         </div>
@@ -131,7 +135,7 @@ const TechMarquee = () => {
                       <SmartImage
                         src={tool.logo}
                         alt={tool.name}
-                        className="max-h-8 w-auto max-w-full object-contain"
+                        className="h-8 w-auto max-w-full object-contain object-left"
                         fallback={
                           <span className="text-xs font-semibold text-slate-600">{tool.name}</span>
                         }
