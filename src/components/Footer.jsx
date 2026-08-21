@@ -78,7 +78,7 @@ const Footer = () => {
           <ul className="mt-5 space-y-3">
             {CAPABILITY_PILLARS.map((p) => (
               <li key={p.id}>
-                <a href="#yetkinlikler" className="text-sm text-slate-400 transition-colors hover:text-white">
+                <a href="#hizmet-yapisi" className="text-sm text-slate-400 transition-colors hover:text-white">
                   {p.title}
                 </a>
               </li>

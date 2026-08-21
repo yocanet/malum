@@ -169,7 +169,7 @@ const Hero = () => {
 
         <div className="hero-soft mt-10 flex w-full flex-col items-center justify-center gap-4 sm:w-auto sm:flex-row">
           <a
-            href="#vakalar"
+            href="#one-cikan-isler"
             className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-brand-500 px-8 py-4 text-sm font-semibold text-white shadow-xl shadow-brand-500/30 transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-400 hover:shadow-2xl hover:shadow-brand-500/40 sm:w-auto"
           >
             Ödüllü Vakaları İncele
@@ -188,10 +188,12 @@ const Hero = () => {
         </div>
 
         {/* Brand mark strip */}
-        <div className="hero-soft mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">
+        <div className="hero-soft mt-14 grid grid-cols-2 items-center justify-items-center gap-x-6 gap-y-2.5 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 sm:flex sm:flex-wrap sm:justify-center sm:gap-x-8 sm:gap-y-3">
           {["Strateji", "Planlama", "Satın Alma", "Ölçümleme"].map((mark, i) => (
             <React.Fragment key={mark}>
-              {i > 0 && <span className="h-1 w-1 rounded-full bg-brand-300" aria-hidden="true" />}
+              {i > 0 && (
+                <span className="hidden h-1 w-1 rounded-full bg-brand-300 sm:block" aria-hidden="true" />
+              )}
               <span className="font-display">{mark}</span>
             </React.Fragment>
           ))}

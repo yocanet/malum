@@ -89,21 +89,21 @@ const WhyUs = () => {
               />
             </div>
 
-            {/* Four value chips at the corners */}
+            {/* Four value chips at the corners — sm+ only (absolute) */}
             {WHY.values.map((v, i) => {
               const Icon = v.icon;
               const brand = i % 2 === 0;
               const pos = [
-                "left-0 top-2 sm:-left-4 sm:top-6",
-                "right-0 top-2 sm:-right-4 sm:top-6",
-                "left-0 bottom-2 sm:-left-4 sm:bottom-6",
-                "right-0 bottom-2 sm:-right-4 sm:bottom-6",
+                "sm:-left-4 sm:top-6",
+                "sm:-right-4 sm:top-6",
+                "sm:-left-4 sm:bottom-6",
+                "sm:-right-4 sm:bottom-6",
               ][i];
               return (
                 <div
                   key={v.label}
                   className={
-                    "why-chip absolute z-10 flex items-center gap-2.5 rounded-2xl border border-slate-200/80 bg-white/90 px-3.5 py-2.5 shadow-lg backdrop-blur-xl " +
+                    "why-chip absolute z-10 hidden items-center gap-2.5 rounded-2xl border border-slate-200/80 bg-white/90 px-3.5 py-2.5 shadow-lg backdrop-blur-xl sm:flex " +
                     pos
                   }
                 >
@@ -118,6 +118,34 @@ const WhyUs = () => {
                     <Icon className="h-4 w-4" aria-hidden="true" />
                   </span>
                   <span className="whitespace-nowrap font-display text-xs font-bold text-ink sm:text-sm">
+                    {v.label}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Mobile: the four values as a static 2×2 grid below the mark */}
+          <div className="mt-6 grid grid-cols-2 gap-3 sm:hidden">
+            {WHY.values.map((v, i) => {
+              const Icon = v.icon;
+              const brand = i % 2 === 0;
+              return (
+                <div
+                  key={v.label}
+                  className="why-chip flex items-center gap-2.5 rounded-2xl border border-slate-200/80 bg-white/90 px-3 py-2.5 shadow-sm"
+                >
+                  <span
+                    className={
+                      "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border " +
+                      (brand
+                        ? "border-brand-200 bg-brand-50 text-brand-600"
+                        : "border-steel-200 bg-steel-50 text-steel-600")
+                    }
+                  >
+                    <Icon className="h-4 w-4" aria-hidden="true" />
+                  </span>
+                  <span className="font-display text-xs font-bold leading-snug text-ink">
                     {v.label}
                   </span>
                 </div>

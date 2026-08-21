@@ -20,7 +20,7 @@ export const GlassCard = ({ className = "", children, ...rest }) => (
 export const SectionBadge = ({ children, tone = "brand" }) => (
   <span
     className={
-      "inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-xs font-semibold tracking-[0.18em] uppercase " +
+      "inline-flex items-center justify-center gap-2 rounded-full border px-3.5 py-1.5 text-[10px] font-semibold tracking-[0.14em] uppercase sm:px-4 sm:text-xs sm:tracking-[0.18em] " +
       (tone === "steel"
         ? "border-steel-200 bg-steel-50 text-steel-600"
         : "border-brand-200 bg-brand-50 text-brand-600")
