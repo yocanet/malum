@@ -1,0 +1,12 @@
+/* TEAM */
+Site: Sparkle Medya — www.spmedya.com
+Design & Development: Yoca
+From: Istanbul, Turkiye
+Web: https://yoca.net
+Contact: connect@yoca.net
+
+/* SITE */
+Language: Turkish
+Standards: HTML5, CSS3, ES2022
+Components: React 18, Vite 5, Tailwind CSS 3, GSAP + ScrollTrigger, Lenis
+Fonts: Space Grotesk, Inter

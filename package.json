@@ -2,6 +2,9 @@
   "name": "sparkle-medya",
   "private": true,
   "version": "1.0.0",
+  "description": "Sparkle Medya — Medya Planlama ve Satın Alma Ajansı kurumsal web sitesi",
+  "author": "Yoca <connect@yoca.net> (https://yoca.net)",
+  "homepage": "https://www.spmedya.com",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -1,3 +1,8 @@
+/**
+ * Sparkle Medya — Kurumsal Web Sitesi
+ * Designed & built by Yoca (https://yoca.net)
+ * © Sparkle Medya. Tüm hakları saklıdır.
+ */
 import React from "react";
 import ReactDOM from "react-dom/client";
 
